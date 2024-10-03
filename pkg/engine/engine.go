@@ -1,0 +1,86 @@
+package engine
+
+import (
+	"fmt"
+
+	"github.com/veandco/go-sdl2/sdl"
+	"github.com/vogtp/eggsis-go/pkg/thing/enemy"
+	"github.com/vogtp/eggsis-go/pkg/thing/player"
+	vertor "github.com/vogtp/eggsis-go/pkg/vector"
+)
+
+const (
+	EnemyCnt   = 10
+	EnemySpwan = 100
+)
+
+type Engine struct {
+	player        *player.Player
+	enemies       []enemy.Enemy
+	enemySpawnCnt int
+}
+
+func Create() (*Engine, error) {
+	e := Engine{}
+
+	p, err := player.Create()
+	if err != nil {
+		return nil, fmt.Errorf("cannot create player: %w", err)
+	}
+	e.player = p
+	e.enemies = make([]enemy.Enemy, EnemyCnt)
+	for i := 0; i < EnemyCnt; i++ {
+		en, err := enemy.Create(e.player.Thing)
+		if err != nil {
+			return nil, err
+		}
+		e.enemies[i] = *en
+	}
+
+	return &e, nil
+}
+
+func (e *Engine) Stop() bool {
+	if e.player.IsDead() {
+		return true
+	}
+
+	return false
+}
+
+func (e *Engine) Move(s vertor.Speed) {
+	e.player.Move(s)
+	e.enemySpawnCnt++
+	if e.enemySpawnCnt > EnemySpwan {
+		e.enemySpawnCnt = 0
+		if en, err := enemy.Create(e.player.Thing); err == nil {
+			e.enemies = append(e.enemies, *en)
+		}
+	}
+	for _, en := range e.enemies {
+		if en.IsDead() {
+			fmt.Println("enemy dead")
+			//slices.Delete(e.enemies, i,i+1)
+			continue
+		}
+		en.MoveTo(e.player, e.enemies)
+	}
+}
+
+func (e *Engine) Paint(surf *sdl.Surface) error {
+	if err := e.player.Paint(surf); err != nil {
+		return err
+	}
+	for _, en := range e.enemies {
+		if err := en.Paint(surf); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (e *Engine) Free() {
+	if e.player != nil {
+		e.player.Free()
+	}
+}
