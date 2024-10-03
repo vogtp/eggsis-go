@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/veandco/go-sdl2/sdl"
+	"github.com/veandco/go-sdl2/ttf"
+	"github.com/vogtp/eggsis-go/pkg/cfg"
 	"github.com/vogtp/eggsis-go/pkg/thing/enemy"
 	"github.com/vogtp/eggsis-go/pkg/thing/player"
 	vertor "github.com/vogtp/eggsis-go/pkg/vector"
@@ -18,6 +20,7 @@ type Engine struct {
 	player        *player.Player
 	enemies       []enemy.Enemy
 	enemySpawnCnt int
+	font *ttf.Font
 }
 
 func Create() (*Engine, error) {
@@ -36,7 +39,11 @@ func Create() (*Engine, error) {
 		}
 		e.enemies[i] = *en
 	}
+	// if font, err = ttf.OpenFont(fontPath, fontSize); err != nil {
+	// 	return err
+	// }
 
+	// defer font.Close()
 	return &e, nil
 }
 
@@ -60,14 +67,21 @@ func (e *Engine) Move(s vertor.Speed) {
 	for _, en := range e.enemies {
 		if en.IsDead() {
 			fmt.Println("enemy dead")
-			//slices.Delete(e.enemies, i,i+1)
+			//slices.Delete(e.enemies, i, i+1)
 			continue
 		}
 		en.MoveTo(e.player, e.enemies)
 	}
 }
 
+func (e Engine) paintPlayerHealth(surf *sdl.Surface) {
+	y := cfg.WinX / e.player.MaxLp * e.player.LP
+	surf.FillRect(&sdl.Rect{X: 1, Y: 1, H: 20, W: cfg.WinX}, 0x03fcdb)
+	surf.FillRect(&sdl.Rect{X: 1, Y: 1, H: 20, W: int32(y)}, 0xfc2403)
+}
+
 func (e *Engine) Paint(surf *sdl.Surface) error {
+	e.paintPlayerHealth(surf)
 	if err := e.player.Paint(surf); err != nil {
 		return err
 	}

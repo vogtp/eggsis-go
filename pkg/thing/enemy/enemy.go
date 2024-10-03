@@ -29,14 +29,22 @@ func Create(t *thing.Thing) (*Enemy, error) {
 		return nil, fmt.Errorf("cannot create base enemy thing: %w", err)
 	}
 	e.Thing = t
-	e.DMG = rand.IntN(4) + 1
+	e.DMG = rand.IntN(2) + 1
 	e.LP = rand.IntN(50) + 50
 	return &e, nil
 }
 
+func calcDmg(dmg int, armor int) int {
+	d := dmg - armor
+	if d < 0 {
+		d = 0
+	}
+	return d
+}
+
 func (e *Enemy) Fight(p *player.Player) {
-	p.LP -= e.DMG
-	e.LP -= p.DMG
+	p.LP -= calcDmg(e.DMG, p.Armor)
+	e.LP -= calcDmg(p.DMG , e.Armor)
 }
 
 func (e *Enemy) MoveTo(p *player.Player, others []Enemy) {

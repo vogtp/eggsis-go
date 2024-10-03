@@ -15,6 +15,7 @@ type Thing struct {
 
 	LP  int
 	DMG int
+	Armor int
 }
 
 func Create(rect sdl.Rect, imgName string) (*Thing, error) {

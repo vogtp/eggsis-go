@@ -10,6 +10,7 @@ import (
 
 type Player struct {
 	*thing.Thing
+	MaxLp int
 }
 
 func Create() (*Player, error) {
@@ -26,6 +27,8 @@ func Create() (*Player, error) {
 	}
 	p.Thing = t
 	p.LP = 100
-	p.DMG = 5
+	p.DMG = 3
+	p.Armor = 1
+	p.MaxLp = p.LP
 	return &p, nil
 }
