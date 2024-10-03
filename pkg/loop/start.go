@@ -5,7 +5,6 @@ import (
 	"github.com/vogtp/eggsis-go/pkg/cfg"
 )
 
-
 func Start() {
 	sdl.Main(run)
 }

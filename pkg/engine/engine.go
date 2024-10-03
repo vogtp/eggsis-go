@@ -20,7 +20,7 @@ type Engine struct {
 	player        *player.Player
 	enemies       []enemy.Enemy
 	enemySpawnCnt int
-	font *ttf.Font
+	font          *ttf.Font
 }
 
 func Create() (*Engine, error) {
@@ -39,11 +39,15 @@ func Create() (*Engine, error) {
 		}
 		e.enemies[i] = *en
 	}
-	// if font, err = ttf.OpenFont(fontPath, fontSize); err != nil {
-	// 	return err
-	// }
+	if err := ttf.Init(); err != nil {
+		return nil, fmt.Errorf("cannot initialise TTF subsystem: %w", err)
+	}
+	font, err := ttf.OpenFont("res/Go-Regular.ttf", 18)
+	if err != nil {
+		return nil, fmt.Errorf("font error: %w", err)
+	}
+	e.font = font
 
-	// defer font.Close()
 	return &e, nil
 }
 
@@ -78,6 +82,16 @@ func (e Engine) paintPlayerHealth(surf *sdl.Surface) {
 	y := cfg.WinX / e.player.MaxLp * e.player.LP
 	surf.FillRect(&sdl.Rect{X: 1, Y: 1, H: 20, W: cfg.WinX}, 0x03fcdb)
 	surf.FillRect(&sdl.Rect{X: 1, Y: 1, H: 20, W: int32(y)}, 0xfc2403)
+	text, err := e.font.RenderUTF8Blended(fmt.Sprintf("LP: %v/%v", e.player.LP, e.player.MaxLp), sdl.Color{R: 0, G: 0, B: 0, A: 255})
+	if  err != nil {
+		return
+	}
+	defer text.Free()
+
+	// Draw the text around the center of the window
+	if err = text.Blit(nil, surf, &sdl.Rect{X: cfg.WinX/2 - text.W /2, Y: 0, W: 0, H: 0}); err != nil {
+		return
+	}
 }
 
 func (e *Engine) Paint(surf *sdl.Surface) error {
@@ -96,5 +110,8 @@ func (e *Engine) Paint(surf *sdl.Surface) error {
 func (e *Engine) Free() {
 	if e.player != nil {
 		e.player.Free()
+	}
+	if e.font != nil {
+		e.font.Close()
 	}
 }
