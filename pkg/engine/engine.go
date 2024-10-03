@@ -42,7 +42,7 @@ func Create() (*Engine, error) {
 	if err := ttf.Init(); err != nil {
 		return nil, fmt.Errorf("cannot initialise TTF subsystem: %w", err)
 	}
-	font, err := ttf.OpenFont("res/Go-Regular.ttf", 18)
+	font, err := ttf.OpenFont("arial.ttf", 18)
 	if err != nil {
 		return nil, fmt.Errorf("font error: %w", err)
 	}
