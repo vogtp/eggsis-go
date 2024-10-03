@@ -86,3 +86,4 @@ func (t *Thing) Paint(surf *sdl.Surface) error {
 	}
 	return t.surface.BlitScaled(nil, surf, t.Rect)
 }
+
