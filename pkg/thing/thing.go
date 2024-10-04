@@ -42,6 +42,7 @@ func (t *Thing) Move(speed vertor.Speed) {
 		scale := float64(t.MaxSpeed) / s
 		speed.X = int32(math.Ceil(float64(speed.X) * scale))
 		speed.Y = int32(math.Ceil(float64(speed.Y) * scale))
+		fmt.Printf("normalise speed: spped=%+v scale=%v\n",speed, scale)
 	}
 	speed.Move(t.Rect)
 	t.checkBorder()

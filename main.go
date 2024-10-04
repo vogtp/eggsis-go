@@ -9,6 +9,7 @@ import (
 
 
 func main() {
+	cfg.Parse()
 	fmt.Printf("Starting %s...\n",cfg.AppName)
 	loop.Start()
     // b:=4050.0/55

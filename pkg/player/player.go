@@ -2,7 +2,9 @@ package player
 
 import (
 	"fmt"
+	"log/slog"
 
+	"github.com/spf13/viper"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/vogtp/eggsis-go/pkg/cfg"
 	"github.com/vogtp/eggsis-go/pkg/thing"
@@ -31,4 +33,17 @@ func Create() (*Player, error) {
 	p.Armor = 1
 	p.MaxLp = p.LP
 	return &p, nil
+}
+
+
+func (p *Player) IsDead() bool {
+	d:=p.Thing.IsDead()
+
+	if d && !viper.GetBool(cfg.PlayerDeath){
+		slog.Warn("No player death")
+		t, _ := thing.Create(*p.Rect, "res/egg.png")
+		p.Thing = t
+		return false
+	}
+	return d
 }
