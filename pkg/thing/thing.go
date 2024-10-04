@@ -13,8 +13,8 @@ type Thing struct {
 	*sdl.Rect
 	surface *sdl.Surface
 
-	LP  int
-	DMG int
+	LP    int
+	DMG   int
 	Armor int
 }
 
@@ -33,20 +33,6 @@ func Create(rect sdl.Rect, imgName string) (*Thing, error) {
 func (t *Thing) Move(speed vertor.Speed) {
 	speed.Move(t.Rect)
 	t.checkBorder()
-}
-
-func (t *Thing) IsDead() bool {
-	d := t.LP < 0
-	if d && t.LP != -255{
-		t.LP = -255
-		if suf, err := img.Load("res/meat_dead.png"); err == nil {
-			suf.SetAlphaMod(200)
-			t.surface = suf
-		} else {
-			fmt.Printf("cannot load dead img: %v\n", err)
-		}
-	}
-	return d
 }
 
 func (t *Thing) checkBorder() {
@@ -73,17 +59,16 @@ func (t *Thing) Free() {
 func (t *Thing) Paint(surf *sdl.Surface) error {
 	if t.IsDead() {
 		a := 200
-		if al, err := t.surface.GetAlphaMod(); err == nil{
+		if al, err := t.surface.GetAlphaMod(); err == nil {
 			a = int(al) - 2
 		}
 		if a < 0 {
 			a = 0 // FIXME remove from array if 0
 		}
 
-		if err:=t.surface.SetAlphaMod(uint8(a)); err!=nil{
-			fmt.Printf("cannot set alpha: %v",err)
+		if err := t.surface.SetAlphaMod(uint8(a)); err != nil {
+			fmt.Printf("cannot set alpha: %v", err)
 		}
 	}
 	return t.surface.BlitScaled(nil, surf, t.Rect)
 }
-
