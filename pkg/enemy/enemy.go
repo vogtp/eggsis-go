@@ -11,13 +11,10 @@ import (
 
 type Enemy struct {
 	*thing.Thing
-	speed int32
 }
 
 func Create(t *thing.Thing) (*Enemy, error) {
-	e := Enemy{
-		speed: cfg.BaseSpeed,
-	}
+	e := Enemy{}
 	r := randRect()
 	for t.HasIntersection(&r) {
 		r = randRect()
@@ -29,6 +26,7 @@ func Create(t *thing.Thing) (*Enemy, error) {
 	e.Thing = t
 	e.DMG = rand.IntN(2) + 1
 	e.LP = rand.IntN(50) + 50
+	e.Speed = rand.Int32N(e.Speed) + 1
 	return &e, nil
 }
 
@@ -39,7 +37,7 @@ func randRect() sdl.Rect {
 		X: x,
 		Y: y,
 		W: cfg.ThingSize,
-		H: cfg.ThingSize+15,
+		H: cfg.ThingSize + 15,
 	}
 	return r
 }

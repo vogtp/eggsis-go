@@ -16,11 +16,15 @@ type Thing struct {
 	LP    int
 	DMG   int
 	Armor int
+	Speed int32
+	MaxSpeed int32
 }
 
 func Create(rect sdl.Rect, imgName string) (*Thing, error) {
 	t := Thing{
-		Rect: &rect,
+		Rect:  &rect,
+		Speed: cfg.BaseSpeed,
+		MaxSpeed: cfg.MaxSpeed,
 	}
 	suf, err := img.Load(imgName)
 	if err != nil {
@@ -31,6 +35,11 @@ func Create(rect sdl.Rect, imgName string) (*Thing, error) {
 }
 
 func (t *Thing) Move(speed vertor.Speed) {
+	if t.Speed > t.MaxSpeed {
+		t.Speed = t.MaxSpeed
+	}
+	speed.X *= t.Speed
+	speed.Y *= t.Speed
 	speed.Move(t.Rect)
 	t.checkBorder()
 }

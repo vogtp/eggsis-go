@@ -66,7 +66,7 @@ func calcSpeed(e *sdl.KeyboardEvent, s int32) int32 {
 		return 0
 	case sdl.PRESSED:
 		s = int32(math.Abs(float64(s)))
-		s = int32(cfg.BaseSpeed + s)
+		s++
 		if s > cfg.MaxSpeed {
 			s = cfg.MaxSpeed
 		}
