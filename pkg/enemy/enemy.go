@@ -31,7 +31,7 @@ func Create(t *thing.Thing) (*Enemy, error) {
 	e.Speed = rand.Int32N(e.Speed) + 1
 	if rand.IntN(2) == 1 {
 		e.LootDrop = loot.Gold(rand.IntN(e.DMG*5) + 1)
-	}else{
+	} else {
 		e.LootDrop = loot.Heal(rand.IntN(e.DMG*5) + 1)
 	}
 	return &e, nil
