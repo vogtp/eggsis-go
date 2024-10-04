@@ -35,11 +35,13 @@ func Create(rect sdl.Rect, imgName string) (*Thing, error) {
 }
 
 func (t *Thing) Move(speed vertor.Speed) {
-	if t.Speed > t.MaxSpeed {
-		t.Speed = t.MaxSpeed
-	}
 	speed.X *= t.Speed
 	speed.Y *= t.Speed
+	if s:=speed.CalcSpeed(); s > t.MaxSpeed {
+		scale := t.MaxSpeed / s
+		speed.X *= scale
+		speed.Y *= scale
+	}
 	speed.Move(t.Rect)
 	t.checkBorder()
 }
