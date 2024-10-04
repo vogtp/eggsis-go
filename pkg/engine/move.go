@@ -1,8 +1,6 @@
 package engine
 
 import (
-	"fmt"
-
 	"github.com/vogtp/eggsis-go/pkg/enemy"
 	"github.com/vogtp/eggsis-go/pkg/vector"
 )
@@ -18,7 +16,7 @@ func (e *Engine) Move(s vector.Speed) {
 	}
 	for _, en := range e.enemies {
 		if en.IsDead() {
-			fmt.Println("enemy dead")
+			// fmt.Println("enemy dead")
 			//slices.Delete(e.enemies, i, i+1)
 			continue
 		}

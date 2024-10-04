@@ -5,6 +5,7 @@ import (
 	"math"
 
 	"github.com/veandco/go-sdl2/sdl"
+	"github.com/vogtp/eggsis-go/pkg/cfg"
 	vertor "github.com/vogtp/eggsis-go/pkg/vector"
 )
 
@@ -65,10 +66,10 @@ func calcSpeed(e *sdl.KeyboardEvent, s int32) int32 {
 		return 0
 	case sdl.PRESSED:
 		s = int32(math.Abs(float64(s)))
-		// s++
-		// if s > cfg.MaxSpeed {
-		// 	s = cfg.MaxSpeed
-		// }
+		s++
+		if s > cfg.MaxSpeed {
+			s = cfg.MaxSpeed
+		}
 		return s
 	default:
 		return 0

@@ -2,6 +2,7 @@ package thing
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/veandco/go-sdl2/img"
 	"github.com/veandco/go-sdl2/sdl"
@@ -13,17 +14,17 @@ type Thing struct {
 	*sdl.Rect
 	surface *sdl.Surface
 
-	LP    int
-	DMG   int
-	Armor int
-	Speed int32
+	LP       int
+	DMG      int
+	Armor    int
+	Speed    int32
 	MaxSpeed int32
 }
 
 func Create(rect sdl.Rect, imgName string) (*Thing, error) {
 	t := Thing{
-		Rect:  &rect,
-		Speed: cfg.BaseSpeed,
+		Rect:     &rect,
+		Speed:    cfg.BaseSpeed,
 		MaxSpeed: cfg.MaxSpeed,
 	}
 	suf, err := img.Load(imgName)
@@ -37,10 +38,10 @@ func Create(rect sdl.Rect, imgName string) (*Thing, error) {
 func (t *Thing) Move(speed vertor.Speed) {
 	speed.X *= t.Speed
 	speed.Y *= t.Speed
-	if s:=speed.CalcSpeed(); s > t.MaxSpeed {
-		scale := t.MaxSpeed / s
-		speed.X *= scale
-		speed.Y *= scale
+	if s := speed.CalcSpeed(); s > float64(t.MaxSpeed) {
+		scale := float64(t.MaxSpeed) / s
+		speed.X = int32(math.Ceil(float64(speed.X) * scale))
+		speed.Y = int32(math.Ceil(float64(speed.Y) * scale))
 	}
 	speed.Move(t.Rect)
 	t.checkBorder()

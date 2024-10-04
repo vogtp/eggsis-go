@@ -16,6 +16,6 @@ func (s Speed) Move(r *sdl.Rect) {
 	r.Y += s.Y
 }
 
-func (s Speed) CalcSpeed() int32{
-	return int32(math.Round(math.Sqrt(float64(s.X*s.X + s.Y*s.Y))))
+func (s Speed) CalcSpeed() float64{
+	return math.Sqrt(float64(s.X*s.X + s.Y*s.Y))
 }
