@@ -11,14 +11,14 @@ func (e *Engine) Move(s vector.Speed) {
 	if e.enemySpawnCnt > EnemySpwan {
 		e.enemySpawnCnt = 0
 		if en, err := enemy.Create(e.player.Thing); err == nil {
-			e.enemies = append(e.enemies, *en)
+			e.enemies = append(e.enemies, en)
 		}
 	}
 	for _, en := range e.enemies {
 		if en.IsDead() {
 			// fmt.Println("enemy dead")
 			//slices.Delete(e.enemies, i, i+1)
-			continue
+			//continue
 		}
 		en.MoveTo(e.player, e.enemies)
 	}

@@ -1,6 +1,11 @@
 package enemy
 
-import "github.com/vogtp/eggsis-go/pkg/player"
+import (
+	"log/slog"
+	"time"
+
+	"github.com/vogtp/eggsis-go/pkg/player"
+)
 
 func calcDmg(dmg int, armor int) int {
 	d := dmg - armor
@@ -11,6 +16,14 @@ func calcDmg(dmg int, armor int) int {
 }
 
 func (e *Enemy) Fight(p *player.Player) {
+	slog.Debug("fight", "enemy", e, "player", p)
+	if e.IsDead() {
+		e.GetLooted(p)
+		return
+	}
 	p.LP -= calcDmg(e.DMG, p.Armor)
 	e.LP -= calcDmg(p.DMG, e.Armor)
+	if e.IsDead() {
+		e.DeathTime = time.Now()
+	}
 }

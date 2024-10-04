@@ -1,7 +1,7 @@
 package loop
 
 import (
-	"fmt"
+	"log/slog"
 	"math"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -19,8 +19,8 @@ var (
 )
 
 func events() {
-	fmt.Println("Starting event loop")
-	defer fmt.Println("Stopping event loop")
+	slog.Warn("Starting event loop")
+	defer slog.Warn("Stopping event loop")
 	for running {
 		event := sdl.PollEvent()
 		if event == nil {

@@ -16,7 +16,7 @@ const (
 
 type Engine struct {
 	player        *player.Player
-	enemies       []enemy.Enemy
+	enemies       []*enemy.Enemy
 	enemySpawnCnt int
 	font          *ttf.Font
 }
@@ -29,13 +29,13 @@ func Create() (*Engine, error) {
 		return nil, fmt.Errorf("cannot create player: %w", err)
 	}
 	e.player = p
-	e.enemies = make([]enemy.Enemy, EnemyCnt)
+	e.enemies = make([]*enemy.Enemy, EnemyCnt)
 	for i := 0; i < EnemyCnt; i++ {
 		en, err := enemy.Create(e.player.Thing)
 		if err != nil {
 			return nil, err
 		}
-		e.enemies[i] = *en
+		e.enemies[i] = en
 	}
 	if err := ttf.Init(); err != nil {
 		return nil, fmt.Errorf("cannot initialise TTF subsystem: %w", err)

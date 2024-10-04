@@ -6,9 +6,12 @@ import (
 	"github.com/vogtp/eggsis-go/pkg/player"
 )
 
-func (e *Enemy) MoveTo(p *player.Player, others []Enemy) {
+func (e *Enemy) MoveTo(p *player.Player, others []*Enemy) {
 	if p.HasIntersection(e.Rect) {
 		e.Fight(p)
+		return
+	}
+	if e.IsDead() {
 		return
 	}
 	x := p.X - e.Rect.X
@@ -19,7 +22,7 @@ func (e *Enemy) MoveTo(p *player.Player, others []Enemy) {
 	e.X += dx
 	e.Y += dy
 	for _, o := range others {
-		if o == *e {
+		if o == e {
 			continue
 		}
 		if o.HasIntersection(e.Rect) && !o.IsDead() {

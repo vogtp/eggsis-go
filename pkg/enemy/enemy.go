@@ -6,15 +6,18 @@ import (
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/vogtp/eggsis-go/pkg/cfg"
+	"github.com/vogtp/eggsis-go/pkg/loot"
 	"github.com/vogtp/eggsis-go/pkg/thing"
 )
 
 type Enemy struct {
 	*thing.Thing
+
+	lootDrop *loot.Loot
 }
 
 func Create(t *thing.Thing) (*Enemy, error) {
-	e := Enemy{}
+
 	r := randRect()
 	for t.HasIntersection(&r) {
 		r = randRect()
@@ -23,10 +26,12 @@ func Create(t *thing.Thing) (*Enemy, error) {
 	if err != nil {
 		return nil, fmt.Errorf("cannot create base enemy thing: %w", err)
 	}
-	e.Thing = t
+	e := Enemy{Thing: t}
 	e.DMG = rand.IntN(2) + 1
 	e.LP = rand.IntN(50) + 50
 	e.Speed = rand.Int32N(e.Speed) + 1
+	l := loot.Gold(rand.IntN(e.DMG*5)+1)
+	e.lootDrop = &l
 	return &e, nil
 }
 

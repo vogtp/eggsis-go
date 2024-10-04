@@ -2,7 +2,9 @@ package thing
 
 import (
 	"fmt"
+	"log/slog"
 	"math"
+	"time"
 
 	"github.com/veandco/go-sdl2/img"
 	"github.com/veandco/go-sdl2/sdl"
@@ -12,13 +14,15 @@ import (
 
 type Thing struct {
 	*sdl.Rect
-	surface *sdl.Surface
+	Surface *sdl.Surface
 
 	LP       int
 	DMG      int
 	Armor    int
 	Speed    int32
 	MaxSpeed int32
+
+	DeathTime time.Time
 }
 
 func Create(rect sdl.Rect, imgName string) (*Thing, error) {
@@ -31,8 +35,12 @@ func Create(rect sdl.Rect, imgName string) (*Thing, error) {
 	if err != nil {
 		return nil, fmt.Errorf("cannot load image %s: %w", imgName, err)
 	}
-	t.surface = suf
+	t.Surface = suf
 	return &t, nil
+}
+
+func (t Thing) String() string {
+	return fmt.Sprintf("LP:%v DMG:%v", t.LP, t.DMG)
 }
 
 func (t *Thing) Move(speed vertor.Speed) {
@@ -42,7 +50,7 @@ func (t *Thing) Move(speed vertor.Speed) {
 		scale := float64(t.MaxSpeed) / s
 		speed.X = int32(math.Ceil(float64(speed.X) * scale))
 		speed.Y = int32(math.Ceil(float64(speed.Y) * scale))
-		fmt.Printf("normalise speed: spped=%+v scale=%v\n",speed, scale)
+		slog.Debug("normalise speed", "speed", speed, "scale", scale)
 	}
 	speed.Move(t.Rect)
 	t.checkBorder()
@@ -64,24 +72,24 @@ func (t *Thing) checkBorder() {
 }
 
 func (t *Thing) Free() {
-	if t.surface != nil {
-		t.surface.Free()
+	if t.Surface != nil {
+		t.Surface.Free()
 	}
 }
 
 func (t *Thing) Paint(surf *sdl.Surface) error {
-	if t.IsDead() {
-		a := 200
-		if al, err := t.surface.GetAlphaMod(); err == nil {
-			a = int(al) - 2
-		}
-		if a < 0 {
-			a = 0 // FIXME remove from array if 0
-		}
+	// if t.IsDead() {
+	// 	a := 200
+	// 	if al, err := t.Surface.GetAlphaMod(); err == nil {
+	// 		a = int(al) - 1
+	// 	}
+	// 	if a < 150 {
+	// 		a = 150 // FIXME remove from array if 0
+	// 	}
 
-		if err := t.surface.SetAlphaMod(uint8(a)); err != nil {
-			fmt.Printf("cannot set alpha: %v", err)
-		}
-	}
-	return t.surface.BlitScaled(nil, surf, t.Rect)
+	// 	if err := t.Surface.SetAlphaMod(uint8(a)); err != nil {
+	// 		fmt.Printf("cannot set alpha: %v", err)
+	// 	}
+	// }
+	return t.Surface.BlitScaled(nil, surf, t.Rect)
 }

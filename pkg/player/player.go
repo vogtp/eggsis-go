@@ -13,6 +13,7 @@ import (
 type Player struct {
 	*thing.Thing
 	MaxLp int
+	Gold int
 }
 
 func Create() (*Player, error) {
@@ -40,7 +41,7 @@ func (p *Player) IsDead() bool {
 	d:=p.Thing.IsDead()
 
 	if d && !viper.GetBool(cfg.PlayerDeath){
-		slog.Warn("No player death")
+		slog.Debug("No player death")
 		t, _ := thing.Create(*p.Rect, "res/egg.png")
 		p.Thing = t
 		return false
