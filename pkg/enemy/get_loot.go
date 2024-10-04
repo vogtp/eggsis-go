@@ -8,7 +8,7 @@ import (
 )
 
 func (e *Enemy) GetLooted(p *player.Player) {
-	if e.lootDrop == nil {
+	if e.LootDrop == nil {
 		slog.Debug("loot taken")
 		return
 	}
@@ -16,8 +16,7 @@ func (e *Enemy) GetLooted(p *player.Player) {
 	if time.Since(e.DeathTime) < time.Millisecond*500 {
 		return
 	}
-	l := *e.lootDrop
-	l(p)
-	e.lootDrop = nil
+	e.LootDrop.Loot(p)
+	e.LootDrop = nil
 	e.Surface.SetAlphaMod(0)
 }

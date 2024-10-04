@@ -9,7 +9,7 @@ import (
 	"github.com/veandco/go-sdl2/img"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/vogtp/eggsis-go/pkg/cfg"
-	vertor "github.com/vogtp/eggsis-go/pkg/vector"
+	"github.com/vogtp/eggsis-go/pkg/vector"
 )
 
 type Thing struct {
@@ -43,7 +43,7 @@ func (t Thing) String() string {
 	return fmt.Sprintf("LP:%v DMG:%v", t.LP, t.DMG)
 }
 
-func (t *Thing) Move(speed vertor.Speed) {
+func (t *Thing) Move(speed vector.Speed) {
 	speed.X *= t.Speed
 	speed.Y *= t.Speed
 	if s := speed.CalcSpeed(); s > float64(t.MaxSpeed) {

@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/veandco/go-sdl2/img"
 	"github.com/vogtp/eggsis-go/pkg/player"
 )
 
@@ -26,4 +27,20 @@ func (e *Enemy) Fight(p *player.Player) {
 	if e.IsDead() {
 		e.DeathTime = time.Now()
 	}
+}
+
+func (e *Enemy) IsDead() bool {
+	d := e.Thing.IsDead()
+
+	if d && e.LP != -255 {
+		e.LP = -255
+			
+		if suf, err := img.Load(e.LootDrop.Image()); err == nil {
+			suf.SetAlphaMod(250)
+			e.Surface = suf
+		} else {
+			slog.Warn("cannot load dead img", "err", err)
+		}
+	}
+	return d
 }

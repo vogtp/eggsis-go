@@ -21,6 +21,8 @@ const (
 
 	// PlayerDeath indicates if the player can die
 	PlayerDeath = "player.death"
+
+	PlayerLP = "player.lp"
 )
 
 func init() {
@@ -30,4 +32,5 @@ func init() {
 	pflag.Bool(LogSource, false, "Log the source line")
 	pflag.Bool(LogJson, false, "Log in json")
 	pflag.Bool(PlayerDeath, true, "Player death possible?  (debugging only)")
+	pflag.Int(PlayerLP, 100, "Player health")
 }

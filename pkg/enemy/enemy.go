@@ -12,8 +12,7 @@ import (
 
 type Enemy struct {
 	*thing.Thing
-
-	lootDrop *loot.Loot
+	LootDrop loot.Loot
 }
 
 func Create(t *thing.Thing) (*Enemy, error) {
@@ -30,8 +29,11 @@ func Create(t *thing.Thing) (*Enemy, error) {
 	e.DMG = rand.IntN(2) + 1
 	e.LP = rand.IntN(50) + 50
 	e.Speed = rand.Int32N(e.Speed) + 1
-	l := loot.Gold(rand.IntN(e.DMG*5)+1)
-	e.lootDrop = &l
+	if rand.IntN(2) == 1 {
+		e.LootDrop = loot.Gold(rand.IntN(e.DMG*5) + 1)
+	}else{
+		e.LootDrop = loot.Heal(rand.IntN(e.DMG*5) + 1)
+	}
 	return &e, nil
 }
 

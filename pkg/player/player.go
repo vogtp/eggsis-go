@@ -29,7 +29,7 @@ func Create() (*Player, error) {
 		return nil, fmt.Errorf("cannot create base player thing: %w", err)
 	}
 	p.Thing = t
-	p.LP = 100
+	p.LP = viper.GetInt(cfg.PlayerLP)
 	p.DMG = 3
 	p.Armor = 1
 	p.MaxLp = p.LP
