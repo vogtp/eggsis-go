@@ -38,8 +38,8 @@ func randRect() sdl.Rect {
 	r := sdl.Rect{
 		X: x,
 		Y: y,
-		W: cfg.ThingSize - 10,
-		H: cfg.ThingSize,
+		W: cfg.ThingSize,
+		H: cfg.ThingSize+15,
 	}
 	return r
 }

@@ -19,9 +19,9 @@ func Create() (*Player, error) {
 		X: cfg.WinX / 2,
 		Y: cfg.WinY / 2,
 		W: cfg.ThingSize,
-		H: cfg.ThingSize * 2,
+		H: cfg.ThingSize+15,
 	}
-	t, err := thing.Create(r, "res/drache.png")
+	t, err := thing.Create(r, "res/egg.png")
 	if err != nil {
 		return nil, fmt.Errorf("cannot create base player thing: %w", err)
 	}
