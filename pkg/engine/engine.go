@@ -58,6 +58,7 @@ func (e *Engine) Stop() bool {
 }
 
 func (e *Engine) Paint(surf *sdl.Surface) error {
+	// e.removeEnemies()
 	e.paintPlayerHealth(surf)
 	if err := e.player.Paint(surf); err != nil {
 		return err

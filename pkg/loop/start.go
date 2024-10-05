@@ -3,6 +3,7 @@ package loop
 import (
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/vogtp/eggsis-go/pkg/cfg"
+	"github.com/vogtp/eggsis-go/pkg/loop/fight_loop"
 )
 
 func Start() {
@@ -22,6 +23,10 @@ func run() {
 	}
 	defer window.Destroy()
 
-	sdl.Do(func() { loop(window) })
+	sdl.Do(func() { loop(window)  })
 
+}
+
+func loop(window *sdl.Window) {
+fight_loop.Run(window)
 }

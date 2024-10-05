@@ -1,4 +1,4 @@
-package loop
+package fight_loop
 
 import (
 	"log/slog"
@@ -6,16 +6,6 @@ import (
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/vogtp/eggsis-go/pkg/cfg"
-	vertor "github.com/vogtp/eggsis-go/pkg/vector"
-)
-
-type vec struct {
-	x, y int32
-}
-
-var (
-	speed   vertor.Speed
-	running = true
 )
 
 func events() {
@@ -32,7 +22,6 @@ func events() {
 			running = false
 			break
 		case *sdl.KeyboardEvent:
-
 			switch e.Keysym.Sym {
 			case sdl.K_LEFT:
 				speed.X = -1 * calcSpeed(e, speed.X)

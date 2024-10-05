@@ -1,4 +1,4 @@
-package loop
+package fight_loop
 
 import (
 	"fmt"
@@ -8,7 +8,13 @@ import (
 	vertor "github.com/vogtp/eggsis-go/pkg/vector"
 )
 
-func loop(window *sdl.Window) {
+var (
+	speed   vertor.Speed
+	running = true
+)
+
+func Run(window *sdl.Window) {
+	running = true
 	speed = vertor.Speed{X: 0, Y: 0}
 	// ttf.OpenFont()
 	engine, err := engine.Create()
@@ -29,7 +35,6 @@ func loop(window *sdl.Window) {
 			running = false
 		}
 		windowSurface.FillRect(nil, color)
-
 		engine.Move(speed)
 
 		if err := engine.Paint(windowSurface); err != nil {
