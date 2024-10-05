@@ -17,6 +17,7 @@ func (heal) Image() string {
 func (h *heal) Loot(p *player.Player) {
 	slog.Info("Loot heal", "lp", h.a)
 	p.LP += h.a
+	p.MaxLp += h.a
 	h.a = 0
 }
 
