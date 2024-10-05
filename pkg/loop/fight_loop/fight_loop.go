@@ -2,6 +2,7 @@ package fight_loop
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/vogtp/eggsis-go/pkg/engine"
@@ -11,11 +12,12 @@ import (
 var (
 	speed   vertor.Speed
 	running = true
+	noSpeed = vertor.Speed{X: 0, Y: 0}
 )
 
 func Run(window *sdl.Window) {
 	running = true
-	speed = vertor.Speed{X: 0, Y: 0}
+	speed = noSpeed
 	// ttf.OpenFont()
 	engine, err := engine.Create()
 	if err != nil {
@@ -30,6 +32,10 @@ func Run(window *sdl.Window) {
 	go events()
 	color := uint32(0xff32a838)
 	for running {
+		if speed == noSpeed {
+			time.Sleep(10*time.Millisecond)
+			continue
+		}
 		if engine.Stop() {
 			color = 0xffa88f32
 			running = false
