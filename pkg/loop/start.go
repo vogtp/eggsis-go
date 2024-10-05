@@ -28,11 +28,16 @@ func run() {
 
 }
 
+type LoopFunc func(*sdl.Window) bool
+
+var loopFuncs []LoopFunc = []LoopFunc{menuloop.Run, fight_loop.Run }
+
 func loop(window *sdl.Window) {
 	for  {
-		if menuloop.Run(window) {
+		for _, loopFunc := range loopFuncs {
+		if loopFunc(window) {
 			return
 		}
-		fight_loop.Run(window)
+	}
 	}
 }

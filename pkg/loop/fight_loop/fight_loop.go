@@ -15,7 +15,7 @@ var (
 	noSpeed = vertor.Speed{X: 0, Y: 0}
 )
 
-func Run(window *sdl.Window) {
+func Run(window *sdl.Window) bool {
 	running = true
 	speed = noSpeed
 	// ttf.OpenFont()
@@ -51,4 +51,5 @@ func Run(window *sdl.Window) {
 
 		sdl.Delay(10)
 	}
+	return false
 }
