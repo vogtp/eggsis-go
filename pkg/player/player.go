@@ -16,8 +16,14 @@ type Player struct {
 	Gold  int
 }
 
+var player *Player
+
 func Create() (*Player, error) {
+	if player != nil {
+		return player, nil
+	}
 	p := Player{}
+	player = p
 	r := sdl.Rect{
 		X: cfg.WinX / 2,
 		Y: cfg.WinY / 2,
