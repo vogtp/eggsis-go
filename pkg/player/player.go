@@ -20,10 +20,11 @@ var player *Player
 
 func Create() (*Player, error) {
 	if player != nil {
+		player.Thing.LP = player.MaxLp
 		return player, nil
 	}
 	p := Player{}
-	player = p
+	player = &p
 	r := sdl.Rect{
 		X: cfg.WinX / 2,
 		Y: cfg.WinY / 2,

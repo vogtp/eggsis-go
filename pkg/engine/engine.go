@@ -75,9 +75,9 @@ func (e *Engine) Paint(surf *sdl.Surface) error {
 }
 
 func (e *Engine) Free() {
-	if e.player != nil {
-		e.player.Free()
-	}
+	// if e.player != nil {
+	// 	e.player.Free()
+	// }
 	if e.font != nil {
 		e.font.Close()
 	}
