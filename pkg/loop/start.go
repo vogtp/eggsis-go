@@ -30,14 +30,15 @@ func run() {
 
 type LoopFunc func(*sdl.Window) bool
 
-var loopFuncs []LoopFunc = []LoopFunc{menuloop.Run, fight_loop.Run }
+var loopFuncs []LoopFunc = []LoopFunc{menuloop.Run, fight_loop.Run}
 
 func loop(window *sdl.Window) {
-	for  {
+	for {
 		for _, loopFunc := range loopFuncs {
-		if loopFunc(window) {
-			return
+			if loopFunc(window) {
+				return
+			}
+			sdl.Delay(100)
 		}
-	}
 	}
 }

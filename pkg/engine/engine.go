@@ -38,7 +38,7 @@ func Create() (*Engine, error) {
 		}
 		e.enemies[i] = en
 	}
-	e.font = fontmanager.GetFont()
+	e.font = fontmanager.GetFont(18)
 
 	return &e, nil
 }

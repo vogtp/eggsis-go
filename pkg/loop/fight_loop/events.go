@@ -36,6 +36,9 @@ func events() {
 				//speed.x = 0
 				speed.Y = calcSpeed(e, speed.Y)
 			case sdl.K_END:
+				if e.State != sdl.RELEASED {
+					continue
+				}
 				running = false
 			default:
 				//fmt.Printf("%#v\n", e)

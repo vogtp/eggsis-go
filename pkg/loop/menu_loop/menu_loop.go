@@ -8,10 +8,11 @@ import (
 var (
 	speed   vertor.Speed
 	running = true
+	stop = false
 )
 
 func Run(window *sdl.Window) bool {
-	stop := false
+	stop = false
 	running = true
 	speed = vertor.Speed{X: 0, Y: 0}
 
@@ -21,7 +22,7 @@ func Run(window *sdl.Window) bool {
 	}
 	go events()
 	//	color := uint32(0xff32a838)
-	for running {
+	for running && ! stop {
 		windowSurface.FillRect(nil, 0)
 
 		window.UpdateSurface()
