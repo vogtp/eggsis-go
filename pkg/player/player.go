@@ -13,7 +13,7 @@ import (
 type Player struct {
 	*thing.Thing
 	MaxLp int
-	Gold int
+	Gold  int
 }
 
 func Create() (*Player, error) {
@@ -22,7 +22,7 @@ func Create() (*Player, error) {
 		X: cfg.WinX / 2,
 		Y: cfg.WinY / 2,
 		W: cfg.ThingSize,
-		H: cfg.ThingSize+15,
+		H: cfg.ThingSize + 15,
 	}
 	t, err := thing.Create(r, "res/egg.png")
 	if err != nil {
@@ -36,11 +36,10 @@ func Create() (*Player, error) {
 	return &p, nil
 }
 
-
 func (p *Player) IsDead() bool {
-	d:=p.Thing.IsDead()
+	d := p.Thing.IsDead()
 
-	if d && !viper.GetBool(cfg.PlayerDeath){
+	if d && !viper.GetBool(cfg.PlayerDeath) {
 		slog.Debug("No player death")
 		t, _ := thing.Create(*p.Rect, "res/egg.png")
 		p.Thing = t
