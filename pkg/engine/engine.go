@@ -6,6 +6,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
 	"github.com/vogtp/eggsis-go/pkg/enemy"
+	"github.com/vogtp/eggsis-go/pkg/fontmanager"
 	"github.com/vogtp/eggsis-go/pkg/player"
 )
 
@@ -37,14 +38,7 @@ func Create() (*Engine, error) {
 		}
 		e.enemies[i] = en
 	}
-	if err := ttf.Init(); err != nil {
-		return nil, fmt.Errorf("cannot initialise TTF subsystem: %w", err)
-	}
-	font, err := ttf.OpenFont("res/Go-Regular.ttf", 18)
-	if err != nil {
-		return nil, fmt.Errorf("font error: %w", err)
-	}
-	e.font = font
+	e.font = fontmanager.GetFont()
 
 	return &e, nil
 }
