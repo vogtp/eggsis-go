@@ -30,9 +30,9 @@ func Create(t *thing.Thing) (*Enemy, error) {
 	e.LP = rand.IntN(50) + 50
 	e.Speed = rand.Int32N(e.Speed) + 1
 	if rand.IntN(2) == 1 {
-		e.LootDrop = loot.Gold(rand.IntN(e.DMG*5) + 1)
+		e.LootDrop = loot.Gold(rand.IntN(e.DMG*5) + e.DMG)
 	} else {
-		e.LootDrop = loot.Heal(rand.IntN(e.DMG*5) + 1)
+		e.LootDrop = loot.Heal(rand.IntN(e.DMG*5) + e.DMG)
 	}
 	return &e, nil
 }

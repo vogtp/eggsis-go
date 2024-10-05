@@ -31,23 +31,24 @@ func Run(window *sdl.Window) {
 	}
 	go events()
 	color := uint32(0xff32a838)
+	nofight :=true
 	for running {
-		if speed == noSpeed {
-			time.Sleep(10*time.Millisecond)
+		windowSurface.FillRect(nil, color)
+		if err := engine.Paint(windowSurface); err != nil {
+			fmt.Printf("cannot paint: %v", err)
+		}
+		window.UpdateSurface()
+		if nofight && speed == noSpeed {
+			time.Sleep(10 * time.Millisecond)
 			continue
 		}
+		nofight = false
 		if engine.Stop() {
 			color = 0xffa88f32
 			running = false
 		}
-		windowSurface.FillRect(nil, color)
 		engine.Move(speed)
 
-		if err := engine.Paint(windowSurface); err != nil {
-			fmt.Printf("cannot paint: %v", err)
-		}
-
-		window.UpdateSurface()
 		sdl.Delay(10)
 	}
 }
