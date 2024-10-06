@@ -19,7 +19,7 @@ func events() {
 		switch e := event.(type) {
 		case *sdl.QuitEvent:
 			//fmt.Printf("Got quit event %v\n", e)
-			running = false
+			stop = true
 			break
 		case *sdl.KeyboardEvent:
 			switch e.Keysym.Sym {

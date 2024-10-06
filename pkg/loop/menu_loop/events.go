@@ -19,7 +19,7 @@ func events() {
 		switch e := event.(type) {
 		case *sdl.QuitEvent:
 			//fmt.Printf("Got quit event %v\n", e)
-			running = false
+			stop = true
 			break
 		case *sdl.KeyboardEvent:
 			switch e.Keysym.Sym {
@@ -45,9 +45,13 @@ func events() {
 			default:
 				//fmt.Printf("%#v\n", e)
 			}
-		case *sdl.MouseMotionEvent:
-			// speed.x = e.X
-			// speed.y = e.Y
+		case *sdl.MouseButtonEvent:
+			r := sdl.Rect{X: e.X, Y: e.Y, H: 1, W: 1}
+			for _, b := range buttons {
+				if b.IsClicked(&r) {
+					break
+				}
+			}
 		default:
 			//fmt.Printf("%#v\n", e)
 		}
