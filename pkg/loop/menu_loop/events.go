@@ -9,8 +9,8 @@ import (
 )
 
 func events() {
-	slog.Warn("Starting event loop")
-	defer slog.Warn("Stopping event loop")
+	slog.Warn("Starting menu event loop")
+	defer slog.Warn("Stopping menu event loop")
 	for running {
 		event := sdl.PollEvent()
 		if event == nil {

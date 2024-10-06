@@ -4,35 +4,38 @@ import (
 	"log/slog"
 
 	"github.com/veandco/go-sdl2/sdl"
-	"github.com/vogtp/eggsis-go/pkg/cfg"
 	"github.com/vogtp/eggsis-go/pkg/fontmanager"
 )
 
 type ActionFunc func()
 
 type Button struct {
-	buttonRect   *sdl.Rect
-	labelRect *sdl.Rect
+	buttonRect *sdl.Rect
+	labelRect  *sdl.Rect
 
-	label   string
+	label    string
 	textSurf *sdl.Surface
 
 	action ActionFunc
 }
 
-func NewButton(label string, action ActionFunc) *Button {
+func NewButton(label string, pos *sdl.Rect, action ActionFunc) *Button {
 	b := Button{
-		label:  label,
-		action: action,
+		label:      label,
+		action:     action,
+		buttonRect: pos,
 	}
 	font := fontmanager.GetFont(18)
 	text, err := font.RenderUTF8Blended(label, sdl.Color{R: 255, G: 0, B: 0, A: 255})
 	if err != nil {
 		panic(err)
 	}
-	rText := &sdl.Rect{X: cfg.WinX/2 - text.W/2, Y: cfg.WinY/2 - text.H/2, W: text.W, H: text.H}
-	b.buttonRect = &sdl.Rect{X: rText.X - 5, Y: rText.Y - 5, W: text.W + 8, H: text.H + 8}
-	b.labelRect = rText
+	b.labelRect = &sdl.Rect{
+		X: b.buttonRect.X + (b.buttonRect.W-text.W)/2,
+		Y: b.buttonRect.Y + (b.buttonRect.H-text.H)/2,
+		W: text.W,
+		H: text.H,
+	}
 	b.textSurf = text
 	return &b
 }

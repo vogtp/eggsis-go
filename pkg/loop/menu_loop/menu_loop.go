@@ -3,6 +3,7 @@ package menuloop
 import (
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/vogtp/eggsis-go/pkg/controlls"
+	"github.com/vogtp/eggsis-go/pkg/controlls/position"
 	vertor "github.com/vogtp/eggsis-go/pkg/vector"
 )
 
@@ -24,7 +25,8 @@ func Run(window *sdl.Window) bool {
 	}
 	go events()
 	//	color := uint32(0xff32a838)
-	buttons = append(buttons, controlls.NewButton("Start Fight", func() { running = false }))
+	buttons = append(buttons, controlls.NewButton("Quit", position.BottmLeft(windowSurface.W, windowSurface.H, 100, 30), func() { stop = true }))
+	buttons = append(buttons, controlls.NewButton("Start Fight", position.BottmRight(windowSurface.W, windowSurface.H, 100, 30), func() { running = false }))
 	for running && !stop {
 		windowSurface.FillRect(nil, 0)
 
