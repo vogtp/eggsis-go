@@ -12,9 +12,9 @@ type ActionFunc func()
 type Button struct {
 	buttonRect *sdl.Rect
 	labelRect  *sdl.Rect
-
-	label    string
-	textSurf *sdl.Surface
+	bgColor   uint32
+	label      string
+	textSurf   *sdl.Surface
 
 	action ActionFunc
 }
@@ -24,6 +24,7 @@ func NewButton(label string, pos *sdl.Rect, action ActionFunc) *Button {
 		label:      label,
 		action:     action,
 		buttonRect: pos,
+		bgColor:    233,
 	}
 	font := fontmanager.GetFont(18)
 	text, err := font.RenderUTF8Blended(label, sdl.Color{R: 255, G: 0, B: 0, A: 255})
@@ -41,7 +42,7 @@ func NewButton(label string, pos *sdl.Rect, action ActionFunc) *Button {
 }
 
 func (b Button) Paint(surf *sdl.Surface) error {
-	if err := surf.FillRect(b.buttonRect, 233); err != nil {
+	if err := surf.FillRect(b.buttonRect, b.bgColor); err != nil {
 		return err
 	}
 	if err := b.textSurf.Blit(nil, surf, b.labelRect); err != nil {
@@ -65,4 +66,8 @@ func (b *Button) IsClicked(rct *sdl.Rect) bool {
 		b.action()
 	}
 	return clicked
+}
+
+func (b *Button) Action() {
+	b.action()
 }

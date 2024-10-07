@@ -7,7 +7,6 @@ import (
 	"github.com/vogtp/eggsis-go/pkg/cfg"
 	"github.com/vogtp/eggsis-go/pkg/engine"
 	"github.com/vogtp/eggsis-go/pkg/fontmanager"
-	"github.com/vogtp/eggsis-go/pkg/fontmanager/choice"
 	vertor "github.com/vogtp/eggsis-go/pkg/vector"
 )
 
@@ -29,9 +28,6 @@ func Run(window *sdl.Window) bool {
 	}
 	defer engine.Free()
 
-	if err:=engine.CreatePlayer(choice.Players[1]); err != nil {
-		panic(err)
-	}
 	windowSurface, err := window.GetSurface()
 	if err != nil {
 		panic(err)

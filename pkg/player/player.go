@@ -17,15 +17,17 @@ type Egg struct {
 	Gold  int
 }
 
-var instance *Egg
+//FIXME stupid hack. but player creation depends on instance beeing visible...
+var Instance *Egg
 
 func Create() (*Egg, error) {
-	if instance != nil {
-		instance.setToStart()
-		return instance, nil
+	slog.Info("player create","instance", Instance)
+	if Instance != nil {
+		Instance.setToStart()
+		return Instance, nil
 	}
 	p := Egg{}
-	instance = &p
+	Instance = &p
 	r := sdl.Rect{
 		X: cfg.WinX / 2,
 		Y: cfg.WinY / 2,
@@ -44,8 +46,12 @@ func Create() (*Egg, error) {
 	return &p, nil
 }
 
+func (p Egg) String() string{
+	return fmt.Sprintf("%s: %s", p.Name, p.Thing.String())
+}
+
 func (p *Egg) setToStart() {
-	p.LP = instance.MaxLp
+	p.LP = Instance.MaxLp
 	p.X = cfg.WinX / 2
 	p.Y = cfg.WinY / 2
 

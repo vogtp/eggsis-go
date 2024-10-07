@@ -23,14 +23,20 @@ type Engine struct {
 	font          *ttf.Font
 }
 
-func Create() (*Engine, error) {
-	e := Engine{}
+var instance *Engine
 
-	p, err := player.Create()
-	if err != nil {
-		return nil, fmt.Errorf("cannot create player: %w", err)
+func Create() (*Engine, error) {
+	e := instance
+	if instance == nil {
+		e = &Engine{}
 	}
-	e.player = p
+	if e.player == nil {
+		p, err := player.Create()
+		if err != nil {
+			return nil, fmt.Errorf("cannot create player: %w", err)
+		}
+		e.player = p
+	}
 	e.enemies = make([]*enemy.Enemy, EnemyCnt)
 	for i := 0; i < EnemyCnt; i++ {
 		en, err := enemy.Create(e.player.Thing)
@@ -41,15 +47,21 @@ func Create() (*Engine, error) {
 	}
 	e.font = fontmanager.GetFont(18)
 
-	return &e, nil
+	return e, nil
 }
 
 func (e *Engine) CreatePlayer(c choice.Item) error {
-	if len(e.player.Name)>0 {
+	if player.Instance!= nil {
 		return nil
 	}
-	e.player.Name =  c.Name
-	if err:=e.player.LoadImage(c.Image); err != nil{
+	p, err := player.Create()
+	if err != nil {
+		return fmt.Errorf("cannot create player: %w", err)
+	}
+	e.player = p
+
+	e.player.Name = c.Name
+	if err := e.player.LoadImage(c.Image); err != nil {
 		return err
 	}
 	c.Modifier(e.player)
