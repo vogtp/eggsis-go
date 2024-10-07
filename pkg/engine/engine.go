@@ -50,7 +50,7 @@ func Create() (*Engine, error) {
 	return e, nil
 }
 
-func (e *Engine) CreatePlayer(c choice.Item) error {
+func (e *Engine) CreatePlayer(c *choice.Item) error {
 	if player.Instance!= nil {
 		return nil
 	}

@@ -55,7 +55,7 @@ func playerMenu() {
 		panic(err)
 	}
 	defer engine.Free()
-
+	list:=controlls.NewChoiceList()
 	cb := make([]*controlls.ChoiceButton, 0)
 	for i, c := range choice.Players {
 		w := int32(200)
@@ -65,7 +65,7 @@ func playerMenu() {
 			W: w,
 			H: 100,
 		}
-		cb = append(cb, controlls.NewChoiceButton(c, &r, engine))
+		cb = append(cb, controlls.NewChoiceButton(list, &c, &r, engine))
 	}
 	for _, c := range cb {
 		buttons = append(buttons, c)

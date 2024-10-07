@@ -14,27 +14,31 @@ type ChoiceButton struct {
 	image *sdl.Surface
 }
 
-var (
-	cb []*ChoiceButton
-)
-
-func init() {
-	slog.Error("choice button hack")
-	cb = make([]*ChoiceButton, 0)
+type ChoiceList struct {
+	choices []*ChoiceButton
+	choice  *choice.Item
 }
 
-func NewChoiceButton(choice choice.Item, pos *sdl.Rect, engine *engine.Engine) *ChoiceButton {
+var ()
+
+func NewChoiceList() *ChoiceList {
+	return &ChoiceList{
+		choices: make([]*ChoiceButton, 0),
+	}
+}
+
+func NewChoiceButton(list *ChoiceList, choice *choice.Item, pos *sdl.Rect, engine *engine.Engine) *ChoiceButton {
 	c := &ChoiceButton{}
 	c.Button = NewButton(choice.Name, pos, func() {
-		slog.Info("Update", "lbe", len(cb))
-		for _, c := range cb {
+		for _, c := range list.choices {
 			c.bgColor = 233
 		}
 		player.Instance = nil // FIXME really stupid hack
 		engine.CreatePlayer(choice)
-		slog.Info("chosen player","player",player.Instance, "choice",choice.Name)
+		slog.Info("chosen player", "player", player.Instance, "choice", choice.Name)
 		c.bgColor = 133
+		list.choice = choice
 	})
-	cb = append(cb, c)
+	list.choices = append(list.choices, c)
 	return c
 }
