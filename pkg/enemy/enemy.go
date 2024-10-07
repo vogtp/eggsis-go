@@ -26,7 +26,7 @@ func Create(t *thing.Thing) (*Enemy, error) {
 		return nil, fmt.Errorf("cannot create base enemy thing: %w", err)
 	}
 	e := Enemy{Thing: t}
-	e.DMG = rand.IntN(2) + 1
+	e.DMG = rand.IntN(1) + 4
 	e.LP = rand.IntN(50) + 50
 	e.Speed = rand.Int32N(e.Speed) + 1
 	if rand.IntN(2) == 1 {
