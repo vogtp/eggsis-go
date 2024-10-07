@@ -10,21 +10,22 @@ import (
 	"github.com/vogtp/eggsis-go/pkg/thing"
 )
 
-type Player struct {
+type Egg struct {
 	*thing.Thing
+	Name  string
 	MaxLp int
 	Gold  int
 }
 
-var player *Player
+var instance *Egg
 
-func Create() (*Player, error) {
-	if player != nil {
-		player.setToStart()
-		return player, nil
+func Create() (*Egg, error) {
+	if instance != nil {
+		instance.setToStart()
+		return instance, nil
 	}
-	p := Player{}
-	player = &p
+	p := Egg{}
+	instance = &p
 	r := sdl.Rect{
 		X: cfg.WinX / 2,
 		Y: cfg.WinY / 2,
@@ -38,19 +39,19 @@ func Create() (*Player, error) {
 	p.Thing = t
 	p.LP = viper.GetInt(cfg.PlayerLP)
 	p.DMG = 3
-	p.Armor = 1
+	p.Armor = 2
 	p.MaxLp = p.LP
 	return &p, nil
 }
 
-func (p *Player) setToStart(){
-		p.LP = player.MaxLp
-		p.X = cfg.WinX / 2
-		p.Y = cfg.WinY / 2
+func (p *Egg) setToStart() {
+	p.LP = instance.MaxLp
+	p.X = cfg.WinX / 2
+	p.Y = cfg.WinY / 2
 
 }
 
-func (p *Player) IsDead() bool {
+func (p *Egg) IsDead() bool {
 	d := p.Thing.IsDead()
 
 	if d && !viper.GetBool(cfg.PlayerDeath) {

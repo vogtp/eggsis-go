@@ -16,7 +16,7 @@ func calcDmg(dmg int, armor int) int {
 	return d
 }
 
-func (e *Enemy) Fight(p *player.Player) {
+func (e *Enemy) Fight(p *player.Egg) {
 	slog.Debug("fight", "enemy", e, "player", p)
 	if e.IsDead() {
 		e.GetLooted(p)
@@ -34,7 +34,7 @@ func (e *Enemy) IsDead() bool {
 
 	if d && e.LP != -255 {
 		e.LP = -255
-			
+
 		if suf, err := img.Load(e.LootDrop.Image()); err == nil {
 			suf.SetAlphaMod(250)
 			e.Surface = suf

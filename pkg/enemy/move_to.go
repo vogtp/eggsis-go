@@ -6,7 +6,7 @@ import (
 	"github.com/vogtp/eggsis-go/pkg/player"
 )
 
-func (e *Enemy) MoveTo(p *player.Player, others []*Enemy) {
+func (e *Enemy) MoveTo(p *player.Egg, others []*Enemy) {
 	if p.HasIntersection(e.Rect) {
 		e.Fight(p)
 		return

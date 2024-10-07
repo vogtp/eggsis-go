@@ -7,6 +7,7 @@ import (
 	"github.com/veandco/go-sdl2/ttf"
 	"github.com/vogtp/eggsis-go/pkg/enemy"
 	"github.com/vogtp/eggsis-go/pkg/fontmanager"
+	"github.com/vogtp/eggsis-go/pkg/fontmanager/choice"
 	"github.com/vogtp/eggsis-go/pkg/player"
 )
 
@@ -16,7 +17,7 @@ const (
 )
 
 type Engine struct {
-	player        *player.Player
+	player        *player.Egg
 	enemies       []*enemy.Enemy
 	enemySpawnCnt int
 	font          *ttf.Font
@@ -41,6 +42,15 @@ func Create() (*Engine, error) {
 	e.font = fontmanager.GetFont(18)
 
 	return &e, nil
+}
+
+func (e *Engine) CreatePlayer(c choice.Item) error {
+	if len(e.player.Name)>0 {
+		return nil
+	}
+	e.player.Name =  c.Name
+	c.Modifier(e.player)
+	return nil
 }
 
 func (e *Engine) Stop() bool {

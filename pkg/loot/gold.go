@@ -14,7 +14,7 @@ func (gold) Image() string {
 	return "res/gold.png"
 }
 
-func (g *gold) Loot(p *player.Player) {
+func (g *gold) Loot(p *player.Egg) {
 	slog.Info("Loot gold", "gold", g)
 	p.Gold += g.g
 	g.g = 0

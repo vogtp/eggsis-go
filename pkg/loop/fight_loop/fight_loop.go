@@ -7,6 +7,7 @@ import (
 	"github.com/vogtp/eggsis-go/pkg/cfg"
 	"github.com/vogtp/eggsis-go/pkg/engine"
 	"github.com/vogtp/eggsis-go/pkg/fontmanager"
+	"github.com/vogtp/eggsis-go/pkg/fontmanager/choice"
 	vertor "github.com/vogtp/eggsis-go/pkg/vector"
 )
 
@@ -21,13 +22,16 @@ func Run(window *sdl.Window) bool {
 	running = true
 	stop = false
 	speed = noSpeed
-	// ttf.OpenFont()
+
 	engine, err := engine.Create()
 	if err != nil {
 		panic(err)
 	}
 	defer engine.Free()
 
+	if err:=engine.CreatePlayer(choice.Players[1]); err != nil {
+		panic(err)
+	}
 	windowSurface, err := window.GetSurface()
 	if err != nil {
 		panic(err)

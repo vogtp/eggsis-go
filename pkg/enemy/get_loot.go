@@ -7,7 +7,7 @@ import (
 	"github.com/vogtp/eggsis-go/pkg/player"
 )
 
-func (e *Enemy) GetLooted(p *player.Player) {
+func (e *Enemy) GetLooted(p *player.Egg) {
 	if e.LootDrop == nil {
 		slog.Debug("loot taken")
 		return
