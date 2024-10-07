@@ -31,12 +31,19 @@ func Create(rect sdl.Rect, imgName string) (*Thing, error) {
 		Speed:    cfg.BaseSpeed,
 		MaxSpeed: cfg.MaxSpeed,
 	}
+	if err := t.LoadImage(imgName); err != nil {
+		return nil, err
+	}
+	return &t, nil
+}
+
+func (t *Thing) LoadImage(imgName string) error {
 	suf, err := img.Load(imgName)
 	if err != nil {
-		return nil, fmt.Errorf("cannot load image %s: %w", imgName, err)
+		return fmt.Errorf("cannot load image %s: %w", imgName, err)
 	}
 	t.Surface = suf
-	return &t, nil
+	return nil
 }
 
 func (t Thing) String() string {

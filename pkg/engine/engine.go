@@ -49,6 +49,9 @@ func (e *Engine) CreatePlayer(c choice.Item) error {
 		return nil
 	}
 	e.player.Name =  c.Name
+	if err:=e.player.LoadImage(c.Image); err != nil{
+		return err
+	}
 	c.Modifier(e.player)
 	return nil
 }
