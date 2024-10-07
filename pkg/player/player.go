@@ -20,7 +20,7 @@ var player *Player
 
 func Create() (*Player, error) {
 	if player != nil {
-		player.Thing.LP = player.MaxLp
+		player.setToStart()
 		return player, nil
 	}
 	p := Player{}
@@ -41,6 +41,13 @@ func Create() (*Player, error) {
 	p.Armor = 1
 	p.MaxLp = p.LP
 	return &p, nil
+}
+
+func (p *Player) setToStart(){
+		p.LP = player.MaxLp
+		p.X = cfg.WinX / 2
+		p.Y = cfg.WinY / 2
+
 }
 
 func (p *Player) IsDead() bool {
