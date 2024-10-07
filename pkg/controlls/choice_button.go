@@ -19,7 +19,9 @@ type ChoiceList struct {
 	choice  *choice.Item
 }
 
-var ()
+func (l ChoiceList)Apply(apply func(c *choice.Item)){
+	apply(l.choice)
+}
 
 func NewChoiceList() *ChoiceList {
 	return &ChoiceList{
@@ -34,7 +36,7 @@ func NewChoiceButton(list *ChoiceList, choice *choice.Item, pos *sdl.Rect, engin
 			c.bgColor = 233
 		}
 		player.Instance = nil // FIXME really stupid hack
-		engine.CreatePlayer(choice)
+		
 		slog.Info("chosen player", "player", player.Instance, "choice", choice.Name)
 		c.bgColor = 133
 		list.choice = choice
