@@ -27,7 +27,7 @@ func Create() (*Egg, error) {
 		return Instance, nil
 	}
 	p := Egg{
-		Gold: 50,
+		Gold: 42,
 	}
 	Instance = &p
 	r := sdl.Rect{

@@ -1,6 +1,11 @@
 package choice
 
-import "github.com/vogtp/eggsis-go/pkg/player"
+import (
+	"log/slog"
+	"time"
+
+	"github.com/vogtp/eggsis-go/pkg/player"
+)
 
 var Mods []Item
 
@@ -10,7 +15,7 @@ func init() {
 		Name:        "Knife",
 		// Image:       "res/egg.png",
 		Description: "Do more damage with a knife",
-		Cost: 50,
+		Cost: 30,
 		Modifier:    func(e *player.Egg) {
 			e.DMG +=10
 		},
@@ -19,7 +24,7 @@ func init() {
 		Name:        "Shield",
 		// Image:       "res/egg_eagle.png",
 		Description: "Protect your egg",
-		Cost: 75,
+		Cost: 50,
 		Modifier: func(p *player.Egg) {
 			p.Armor += 1
 		},
@@ -28,7 +33,7 @@ func init() {
 		Name:        "Health",
 		// Image:       "res/egg_strauss.png",
 		Description: "More health",
-		Cost: 50,
+		Cost: 20,
 		Modifier: func(p *player.Egg) {
 			p.MaxLp += 40
 			p.LP = p.MaxLp
@@ -38,9 +43,19 @@ func init() {
 		Name:        "Wings",
 		// Image:       "res/egg_strauss.png",
 		Description: "Move faster",
-		Cost: 50,
+		Cost: 20,
 		Modifier: func(p *player.Egg) {
 			p.Speed += 4
+		},
+	})
+	Mods = append(Mods, Item{
+		Name:        "Karate",
+		// Image:       "res/egg_strauss.png",
+		Description: "Fight faster",
+		Cost: 30,
+		Modifier: func(p *player.Egg) {
+			p.AttackFreq = time.Duration(float64(p.AttackFreq) * 0.8)
+			slog.Info("Karate", "attack freq", p.AttackFreq)
 		},
 	})
 }
