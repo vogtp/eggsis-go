@@ -48,6 +48,9 @@ func Run(window *sdl.Window) bool {
 	if err := engine.StartFight(); err != nil {
 		panic(err)
 	}
+	cnt := 0
+	totDur := int64(0)
+	longDur:=0
 	for running && !stop {
 		loopBegin := time.Now()
 		windowSurface.FillRect(nil, color)
@@ -86,13 +89,17 @@ func Run(window *sdl.Window) bool {
 
 		window.UpdateSurface()
 		d := time.Since(loopBegin).Milliseconds()
+		totDur += d
+		cnt++
 		delay := 10
 		if d < int64(delay) {
 			sdl.Delay(uint32(delay) - uint32(d))
-		}else{
+		} else {
+			longDur++
 			slog.Warn("taking TOOOO LOOOONG", "delta", d)
 		}
 	}
+	slog.Warn("Finished loop", "mean duration", totDur/int64(cnt),"long cnt", longDur, "total cnt",cnt)
 	displayVictory(window, windowSurface)
 	return stop
 }
