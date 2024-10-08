@@ -10,7 +10,7 @@ func (e *Engine) Move(s vector.Speed) {
 	e.enemySpawnCnt++
 	if e.enemySpawnCnt > EnemySpwan {
 		e.enemySpawnCnt = 0
-		if en, err := enemy.Create(e.player.Thing); err == nil {
+		if en, err := enemy.Create(e.player.Thing, e.Round); err == nil {
 			e.enemies = append(e.enemies, en)
 		}
 	}

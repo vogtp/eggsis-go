@@ -15,7 +15,7 @@ type Enemy struct {
 	LootDrop loot.Loot
 }
 
-func Create(t *thing.Thing) (*Enemy, error) {
+func Create(t *thing.Thing, round int) (*Enemy, error) {
 
 	r := randRect()
 	for t.HasIntersection(&r) {
@@ -26,9 +26,9 @@ func Create(t *thing.Thing) (*Enemy, error) {
 		return nil, fmt.Errorf("cannot create base enemy thing: %w", err)
 	}
 	e := Enemy{Thing: t}
-	e.DMG = rand.IntN(1) + 4
-	e.LP = rand.IntN(50) + 50
-	e.Speed = rand.Int32N(e.Speed) + 1
+	e.DMG = rand.IntN(1) + 4*round
+	e.LP = rand.IntN(50) + 50*round
+	e.Speed = rand.Int32N(e.Speed) + 1*int32(round)
 	if rand.IntN(2) == 1 {
 		e.LootDrop = loot.Gold(rand.IntN(e.DMG*5) + e.DMG)
 	} else {

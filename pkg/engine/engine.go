@@ -2,6 +2,7 @@ package engine
 
 import (
 	"fmt"
+	"log/slog"
 	"time"
 
 	"github.com/spf13/viper"
@@ -24,6 +25,7 @@ type Engine struct {
 	enemies       []*enemy.Enemy
 	enemySpawnCnt int
 	font          *ttf.Font
+	Round         int
 }
 
 var instance *Engine
@@ -32,7 +34,9 @@ func Create() (*Engine, error) {
 	e := instance
 	if instance == nil {
 		e = &Engine{}
+		instance = e
 	}
+
 	if e.player == nil {
 		p, err := player.Create()
 		if err != nil {
@@ -40,21 +44,29 @@ func Create() (*Engine, error) {
 		}
 		e.player = p
 	}
-	e.enemies = make([]*enemy.Enemy, EnemyCnt)
-	for i := 0; i < EnemyCnt; i++ {
-		en, err := enemy.Create(e.player.Thing)
-		if err != nil {
-			return nil, err
-		}
-		e.enemies[i] = en
-	}
+
 	e.font = fontmanager.GetFont(18)
 
 	return e, nil
 }
 
+func (e *Engine) StartFight() error {
+	slog.Warn("Starting fight", "round", e.Round)
+	e.Round=e.Round + 1
+	slog.Warn("Starting fight", "round", e.Round)
+	e.enemies = make([]*enemy.Enemy, EnemyCnt)
+	for i := 0; i < EnemyCnt; i++ {
+		en, err := enemy.Create(e.player.Thing, e.Round)
+		if err != nil {
+			return err
+		}
+		e.enemies[i] = en
+	}
+	return nil
+}
+
 func (e *Engine) CreatePlayer(c *choice.Item) error {
-	if player.Instance!= nil {
+	if player.Instance != nil {
 		return nil
 	}
 	p, err := player.Create()
@@ -92,8 +104,8 @@ func (e *Engine) Paint(surf *sdl.Surface, start time.Time) error {
 	}
 	s := e.player.Stats()
 	s["Enemies"] = fmt.Sprintf("%v", len(e.enemies))
-	if ! start.IsZero(){
-	s["Duration"] = fmt.Sprintf("%s", viper.GetDuration(cfg.FightDuration).Truncate(time.Second) - time.Since(start).Truncate(time.Second))
+	if !start.IsZero() {
+		s["Duration"] = fmt.Sprintf("%s", viper.GetDuration(cfg.FightDuration).Truncate(time.Second)-time.Since(start).Truncate(time.Second))
 	}
 	e.paintStats(surf, s)
 	return nil
