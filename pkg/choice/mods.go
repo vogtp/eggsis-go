@@ -11,7 +11,7 @@ func init() {
 		// Image:       "res/egg.png",
 		Description: "Do more damage with a knife",
 		Modifier:    func(e *player.Egg) {
-			e.DMG +=2
+			e.DMG +=10
 		},
 	})
 	Mods = append(Mods, Item{
@@ -19,7 +19,7 @@ func init() {
 		// Image:       "res/egg_eagle.png",
 		Description: "Protect your egg",
 		Modifier: func(p *player.Egg) {
-			p.Armor += 2
+			p.Armor += 4
 		},
 	})
 	Mods = append(Mods, Item{
@@ -36,7 +36,7 @@ func init() {
 		// Image:       "res/egg_strauss.png",
 		Description: "Move faster",
 		Modifier: func(p *player.Egg) {
-			p.Speed += 5
+			p.Speed += 3
 		},
 	})
 }

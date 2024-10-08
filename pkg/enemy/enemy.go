@@ -33,8 +33,8 @@ func Create(t *thing.Thing, round int) (*Enemy, error) {
 		return nil, fmt.Errorf("cannot create base enemy thing: %w", err)
 	}
 	e := Enemy{Thing: t}
-	e.DMG = level + 4*round
-	e.LP = level*50 + 50*round
+	e.DMG = level + round + 4
+	e.LP = level*50 + 10*round
 	e.Speed = int32(level+round) + e.Speed - 5
 	if rand.IntN(2) == 1 {
 		e.LootDrop = loot.Gold(rand.IntN(e.DMG*5) + e.DMG)
