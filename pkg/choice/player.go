@@ -1,6 +1,10 @@
 package choice
 
-import "github.com/vogtp/eggsis-go/pkg/player"
+import (
+	"time"
+
+	"github.com/vogtp/eggsis-go/pkg/player"
+)
 
 var Players []Item
 
@@ -34,5 +38,23 @@ func init() {
 			p.MaxLp+=30
 			p.LP = p.MaxLp
 		},
+	})
+	Players = append(Players, Item{
+		Name:        "Egg Stinguish",
+		Image:       "res/atomic.png",
+		Description: "Completely OP",
+		Modifier: func(p *player.Egg) {
+			p.Armor=20
+			p.DMG=20
+			p.AttackFreq=10*time.Millisecond
+		},
+	})
+	Players = append(Players, Item{
+		Name:        "Egg Scuse Me",
+		Image:       "res/egg_excuse.png",
+		Description: "Sorry about it...",
+		Modifier: func(p *player.Egg) {
+			p.Armor=200
+			p.DMG=0		},
 	})
 }
