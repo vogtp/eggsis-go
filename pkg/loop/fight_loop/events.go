@@ -2,10 +2,8 @@ package fight_loop
 
 import (
 	"log/slog"
-	"math"
 
 	"github.com/veandco/go-sdl2/sdl"
-	"github.com/vogtp/eggsis-go/pkg/cfg"
 )
 
 func events() {
@@ -69,12 +67,12 @@ func calcSpeed(e *sdl.KeyboardEvent, s int32) int32 {
 	case sdl.RELEASED:
 		return 0
 	case sdl.PRESSED:
-		s = int32(math.Abs(float64(s)))
-		s++
-		if s > cfg.MaxSpeed {
-			s = cfg.MaxSpeed
-		}
-		return s
+		// s = int32(math.Abs(float64(s)))
+		// s++
+		// if s > cfg.MaxSpeed {
+		// 	s = cfg.MaxSpeed
+		// }
+		return 1
 	default:
 		return 0
 	}
