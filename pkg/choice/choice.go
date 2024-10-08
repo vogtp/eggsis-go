@@ -9,6 +9,7 @@ type Item struct {
 	Image       string
 	Description string
 	Modifier    PlayerModifier
+	Action      player.ActionFunc
 
 	Cost int
 }

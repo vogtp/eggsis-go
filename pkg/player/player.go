@@ -12,23 +12,21 @@ import (
 
 type Egg struct {
 	*thing.Thing
-	Name  string
-	MaxLp int
-	Gold  int
+	Name string
+
+	Actions []ActionFunc
 }
 
-//FIXME stupid hack. but player creation depends on instance beeing visible...
+// FIXME stupid hack. but player creation depends on instance beeing visible...
 var Instance *Egg
 
 func Create() (*Egg, error) {
-	slog.Info("player create","instance", Instance)
+	slog.Info("player create", "instance", Instance)
 	if Instance != nil {
 		Instance.SetToStart()
 		return Instance, nil
 	}
-	p := Egg{
-		Gold: 42,
-	}
+	p := Egg{}
 	Instance = &p
 	r := sdl.Rect{
 		X: cfg.WinX / 2,
@@ -45,10 +43,11 @@ func Create() (*Egg, error) {
 	p.DMG = 3
 	p.Armor = 2
 	p.MaxLp = p.LP
+	p.Gold = 42
 	return &p, nil
 }
 
-func (p Egg) String() string{
+func (p Egg) String() string {
 	return fmt.Sprintf("%s: %s", p.Name, p.Thing.String())
 }
 

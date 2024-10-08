@@ -1,13 +1,13 @@
-package enemy
+package player
 
 import (
 	"log/slog"
 	"time"
 
-	"github.com/vogtp/eggsis-go/pkg/player"
+	"github.com/vogtp/eggsis-go/pkg/enemy"
 )
 
-func (e *Enemy) GetLooted(p *player.Egg) {
+func (p *Egg) GetLooted(e *enemy.Enemy) {
 	if e.LootDrop == nil {
 		slog.Debug("loot taken")
 		return
@@ -16,7 +16,7 @@ func (e *Enemy) GetLooted(p *player.Egg) {
 	if time.Since(e.DeathTime) < time.Millisecond*500 {
 		return
 	}
-	e.LootDrop.Loot(p)
+	e.LootDrop.Loot(p.Thing)
 	e.LootDrop = nil
-	e.Surface.SetAlphaMod(0)
+	e.SetAlpha(0)
 }

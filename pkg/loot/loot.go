@@ -1,8 +1,10 @@
 package loot
 
-import "github.com/vogtp/eggsis-go/pkg/player"
+import (
+	"github.com/vogtp/eggsis-go/pkg/thing"
+)
 
 type Loot interface {
-	Loot(*player.Egg)
+	Loot(*thing.Thing)
 	Image() string
 }

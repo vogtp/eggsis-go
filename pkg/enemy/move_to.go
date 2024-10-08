@@ -3,14 +3,10 @@ package enemy
 import (
 	"math"
 
-	"github.com/vogtp/eggsis-go/pkg/player"
+	"github.com/veandco/go-sdl2/sdl"
 )
 
-func (e *Enemy) MoveTo(p *player.Egg, others []*Enemy) {
-	if p.HasIntersection(e.Rect) {
-		e.Fight(p)
-		return
-	}
+func (e *Enemy) MoveTo(p *sdl.Rect, others []*Enemy) {
 	if e.IsDead() {
 		return
 	}

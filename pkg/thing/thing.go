@@ -14,13 +14,15 @@ import (
 
 type Thing struct {
 	*sdl.Rect
-	Surface *sdl.Surface
+	surface *sdl.Surface
 
 	LP       int
+	MaxLp    int
 	DMG      int
 	Armor    int
 	Speed    int32
 	MaxSpeed int32
+	Gold     int
 
 	LastAttack time.Time
 	AttackFreq time.Duration
@@ -42,13 +44,27 @@ func Create(rect sdl.Rect, imgName string) (*Thing, error) {
 	return &t, nil
 }
 
+// var imgCache map[string]*sdl.Surface
+
 func (t *Thing) LoadImage(imgName string) error {
+	// if imgCache == nil {
+	// 	imgCache = make(map[string]*sdl.Surface)
+	// }
+	// if s, ok := imgCache[imgName]; ok {
+	// 	t.surface = s
+	// 	return nil
+	// }
 	suf, err := img.Load(imgName)
 	if err != nil {
 		return fmt.Errorf("cannot load image %s: %w", imgName, err)
 	}
-	t.Surface = suf
+	t.surface = suf
+	// imgCache[imgName] = suf
 	return nil
+}
+
+func (t *Thing) SetAlpha(a uint8) {
+	t.surface.SetAlphaMod(a)
 }
 
 func (t Thing) String() string {
@@ -84,8 +100,8 @@ func (t *Thing) checkBorder() {
 }
 
 func (t *Thing) Free() {
-	if t.Surface != nil {
-		t.Surface.Free()
+	if t.surface != nil {
+		t.surface.Free()
 	}
 }
 
@@ -103,5 +119,5 @@ func (t *Thing) Paint(surf *sdl.Surface) error {
 	// 		fmt.Printf("cannot set alpha: %v", err)
 	// 	}
 	// }
-	return t.Surface.BlitScaled(nil, surf, t.Rect)
+	return t.surface.BlitScaled(nil, surf, t.Rect)
 }

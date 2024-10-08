@@ -5,8 +5,22 @@ import (
 	"github.com/vogtp/eggsis-go/pkg/vector"
 )
 
+func (e *Engine) cleanupEnemies(){
+	e2 := e.enemies
+	e.enemies = make([]*enemy.Enemy, 0, len(e2))
+	for _, en := range e2 {
+		if ! en.IsDead() || en.LootDrop != nil {
+			e.enemies = append(e.enemies, en)
+		}else{
+			en.Free()
+		}
+	}
+}
+
 func (e *Engine) Move(s vector.Speed) {
+	e.cleanupEnemies()
 	e.player.Move(s)
+	go e.player.Action(e.enemies)
 	e.enemySpawnCnt++
 	if e.enemySpawnCnt > EnemySpwan {
 		e.enemySpawnCnt = 0
@@ -15,12 +29,15 @@ func (e *Engine) Move(s vector.Speed) {
 		}
 	}
 	for _, en := range e.enemies {
-		if en.IsDead() {
-			// fmt.Println("enemy dead")
-			//slices.Delete(e.enemies, i, i+1)
-			//continue
+		// if en.IsDead() {
+		// 	// fmt.Println("enemy dead")
+		// 	//slices.Delete(e.enemies, i, i+1)
+		// 	//continue
+		// }
+		if e.player.HasIntersection(en.Rect) {
+			e.Fight(e.player, en)
+			return
 		}
-		en.MoveTo(e.player, e.enemies)
+		en.MoveTo(e.player.Rect, e.enemies)
 	}
-	e.player.Action(e.enemies)
 }

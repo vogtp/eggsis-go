@@ -26,15 +26,18 @@ func (l ChoiceList) Apply(apply func(c *choice.Item)) {
 		return
 	}
 	//quickfix for bug where the gold is given back
-	g:=player.Instance.Gold
+	g := player.Instance.Gold
 	slog.Info("Menu apply", "gold", player.Instance.Gold)
 	for c, ok := range l.choiceSelection {
 		if ok {
 			slog.Debug("Appling choice", "choice", c.choice)
 			apply(c.choice)
+			if c.choice.Action != nil {
+				player.Instance.Actions = append(player.Instance.Actions, c.choice.Action)
+			}
 		}
 	}
-	player.Instance.Gold=g
+	player.Instance.Gold = g
 
 }
 
@@ -50,16 +53,16 @@ func NewChoiceButton(list *ChoiceList, choice *choice.Item, pos *sdl.Rect, multi
 		choice: choice,
 	}
 	label := choice.Name
-	if choice.Cost > 0{
+	if choice.Cost > 0 {
 		label = fmt.Sprintf("%s (%v G)", label, choice.Cost)
 	}
 	c.Button = NewButton(label, pos, func() {
 		if !list.choiceSelection[c] {
-			if player.Instance.Gold < c.choice.Cost{
+			if player.Instance.Gold < c.choice.Cost {
 				return
 			}
 			player.Instance.Gold -= c.choice.Cost
-		}else{
+		} else {
 			player.Instance.Gold += c.choice.Cost
 		}
 		if !multi {
@@ -76,7 +79,7 @@ func NewChoiceButton(list *ChoiceList, choice *choice.Item, pos *sdl.Rect, multi
 		}
 
 		slog.Info("chosen mod", "player", player.Instance, "choice", choice.Name)
-		
+
 	})
 	list.choices = append(list.choices, c)
 	list.choiceSelection[c] = false

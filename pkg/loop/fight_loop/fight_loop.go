@@ -89,6 +89,8 @@ func Run(window *sdl.Window) bool {
 		delay := 10
 		if d < int64(delay) {
 			sdl.Delay(uint32(delay) - uint32(d))
+		}else{
+			slog.Warn("taking TOOOO LOOOONG", "delta", d)
 		}
 	}
 	displayVictory(window, windowSurface)

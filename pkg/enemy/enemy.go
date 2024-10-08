@@ -26,8 +26,8 @@ func Create(t *thing.Thing, round int) (*Enemy, error) {
 	if rand.IntN(10) > 8 {
 		level = 2
 	}
-	r.H += r.H/4 * int32(level-1)
-	r.W += r.W/4 * int32(level-1)
+	r.H += r.H / 4 * int32(level-1)
+	r.W += r.W / 4 * int32(level-1)
 	t, err := thing.Create(r, "res/meat.png")
 	if err != nil {
 		return nil, fmt.Errorf("cannot create base enemy thing: %w", err)
@@ -42,7 +42,7 @@ func Create(t *thing.Thing, round int) (*Enemy, error) {
 		e.LootDrop = loot.Gold(rand.IntN(e.DMG*5) + e.DMG)
 	}
 
-	slog.Info("New Enemy", "level", level, "enemy",e)
+	slog.Info("New Enemy", "level", level, "enemy", e)
 	return &e, nil
 }
 
@@ -56,4 +56,19 @@ func randRect() sdl.Rect {
 		H: cfg.ThingSize + 15,
 	}
 	return r
+}
+
+func (e *Enemy) IsDead() bool {
+	d := e.Thing.IsDead()
+
+	if d && e.LP != -255 {
+		e.LP = -255
+
+		if err := e.LoadImage(e.LootDrop.Image()); err == nil {
+			e.SetAlpha(200)
+		} else {
+			slog.Warn("cannot load dead img", "err", err)
+		}
+	}
+	return d
 }
