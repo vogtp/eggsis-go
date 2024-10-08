@@ -25,12 +25,17 @@ func (l ChoiceList) Apply(apply func(c *choice.Item)) {
 		slog.Error("no choice to aplly")
 		return
 	}
+	//quickfix for bug where the gold is given back
+	g:=player.Instance.Gold
+	slog.Info("Menu apply", "gold", player.Instance.Gold)
 	for c, ok := range l.choiceSelection {
 		if ok {
 			slog.Debug("Appling choice", "choice", c.choice)
 			apply(c.choice)
 		}
 	}
+	player.Instance.Gold=g
+
 }
 
 func NewChoiceList() *ChoiceList {
