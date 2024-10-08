@@ -22,4 +22,5 @@ func (e *Engine) Move(s vector.Speed) {
 		}
 		en.MoveTo(e.player, e.enemies)
 	}
+	e.player.Action(e.enemies)
 }
