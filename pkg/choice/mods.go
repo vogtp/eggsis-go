@@ -19,7 +19,7 @@ func init() {
 		// Image:       "res/egg_eagle.png",
 		Description: "Protect your egg",
 		Modifier: func(p *player.Egg) {
-			p.Armor += 4
+			p.Armor += 3
 		},
 	})
 	Mods = append(Mods, Item{
