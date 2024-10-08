@@ -2,12 +2,15 @@ package engine
 
 import (
 	"fmt"
+	"time"
 
+	"github.com/spf13/viper"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
+	"github.com/vogtp/eggsis-go/pkg/cfg"
+	"github.com/vogtp/eggsis-go/pkg/choice"
 	"github.com/vogtp/eggsis-go/pkg/enemy"
 	"github.com/vogtp/eggsis-go/pkg/fontmanager"
-	"github.com/vogtp/eggsis-go/pkg/choice"
 	"github.com/vogtp/eggsis-go/pkg/player"
 )
 
@@ -76,7 +79,7 @@ func (e *Engine) Stop() bool {
 	return false
 }
 
-func (e *Engine) Paint(surf *sdl.Surface) error {
+func (e *Engine) Paint(surf *sdl.Surface, start time.Time) error {
 	// e.removeEnemies()
 	e.paintPlayerHealth(surf)
 	if err := e.player.Paint(surf); err != nil {
@@ -89,6 +92,9 @@ func (e *Engine) Paint(surf *sdl.Surface) error {
 	}
 	s := e.player.Stats()
 	s["Enemies"] = fmt.Sprintf("%v", len(e.enemies))
+	if ! start.IsZero(){
+	s["Duration"] = fmt.Sprintf("%s", viper.GetDuration(cfg.FightDuration).Truncate(time.Second) - time.Since(start).Truncate(time.Second))
+	}
 	e.paintStats(surf, s)
 	return nil
 }

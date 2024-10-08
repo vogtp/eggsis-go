@@ -2,6 +2,7 @@ package cfg
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/spf13/pflag"
 )
@@ -23,6 +24,8 @@ const (
 	PlayerDeath = "player.death"
 
 	PlayerLP = "player.lp"
+
+	FightDuration = "fight.duration"
 )
 
 func init() {
@@ -33,4 +36,5 @@ func init() {
 	pflag.Bool(LogJson, false, "Log in json")
 	pflag.Bool(PlayerDeath, true, "Player death possible?  (debugging only)")
 	pflag.Int(PlayerLP, 100, "Player health")
+	pflag.Duration(FightDuration, 30*time.Second, "The duration of a fight")
 }

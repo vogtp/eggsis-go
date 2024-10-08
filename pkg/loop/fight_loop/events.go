@@ -40,6 +40,8 @@ func events() {
 					continue
 				}
 				running = false
+			case sdl.K_SPACE:
+				showVictory = false
 			default:
 				//fmt.Printf("%#v\n", e)
 			}
