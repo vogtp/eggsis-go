@@ -49,6 +49,7 @@ func Run(window *sdl.Window) bool {
 		panic(err)
 	}
 	for running && !stop {
+		loopBegin := time.Now()
 		windowSurface.FillRect(nil, color)
 		if err := engine.Paint(windowSurface, start); err != nil {
 			slog.Error("cannot paint", "err", err)
@@ -84,7 +85,11 @@ func Run(window *sdl.Window) bool {
 		engine.Move(speed)
 
 		window.UpdateSurface()
-		sdl.Delay(10)
+		d := time.Since(loopBegin).Milliseconds()
+		delay := 10
+		if d < int64(delay) {
+			sdl.Delay(uint32(delay) - uint32(d))
+		}
 	}
 	displayVictory(window, windowSurface)
 	return stop
