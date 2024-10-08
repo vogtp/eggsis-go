@@ -47,7 +47,7 @@ func (t *Thing) LoadImage(imgName string) error {
 }
 
 func (t Thing) String() string {
-	return fmt.Sprintf("LP:%v DMG:%v", t.LP, t.DMG)
+	return fmt.Sprintf("LP:%v DMG:%v Armor: %v Speed: %v", t.LP, t.DMG,t.Armor, t.Speed)
 }
 
 func (t *Thing) Move(speed vector.Speed) {

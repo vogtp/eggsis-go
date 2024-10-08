@@ -9,5 +9,6 @@ func (p Egg) Stats() map[string]string {
 	stats["Gold"] = fmt.Sprintf("%v", p.Gold)
 	stats["Damage"] = fmt.Sprintf("%v", p.DMG)
 	stats["Name"] = p.Name
+	stats["speed"] = fmt.Sprintf("%v",p.Speed)
 	return stats
 }

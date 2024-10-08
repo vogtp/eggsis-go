@@ -28,7 +28,6 @@ func Create(t *thing.Thing, round int) (*Enemy, error) {
 	}
 	r.H += r.H/5 * int32(level-1)
 	r.W += r.W/5 * int32(level-1)
-	slog.Info("New Enemy", "level", level, "rect",r)
 	t, err := thing.Create(r, "res/meat.png")
 	if err != nil {
 		return nil, fmt.Errorf("cannot create base enemy thing: %w", err)
@@ -36,12 +35,14 @@ func Create(t *thing.Thing, round int) (*Enemy, error) {
 	e := Enemy{Thing: t}
 	e.DMG = level + 4*round
 	e.LP = level*50 + 50*round
-	e.Speed = int32(level+round) + e.Speed - 2
+	e.Speed = int32(level+round) + e.Speed - 5
 	if rand.IntN(2) == 1 {
 		e.LootDrop = loot.Gold(rand.IntN(e.DMG*5) + e.DMG)
 	} else {
 		e.LootDrop = loot.Heal(rand.IntN(e.DMG*5) + e.DMG)
 	}
+
+	slog.Info("New Enemy", "level", level, "enemy",e)
 	return &e, nil
 }
 
