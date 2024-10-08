@@ -24,7 +24,9 @@ func calcDmg(attacker *thing.Thing, target *thing.Thing) int {
 func (e *Engine) Fight(player *player.Egg, enemy *enemy.Enemy) {
 	slog.Debug("fight", "enemy", enemy, "player", player)
 	if enemy.IsDead() {
-		player.GetLooted(enemy)
+		if player.GetLooted(enemy){
+			e.deadEnemies++
+		}
 		return
 	}
 	player.LP -= calcDmg(enemy.Thing, player.Thing)

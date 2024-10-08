@@ -14,6 +14,7 @@ import (
 type Enemy struct {
 	*thing.Thing
 	LootDrop loot.Loot
+	Delete   bool
 }
 
 func Create(t *thing.Thing, round int) (*Enemy, error) {

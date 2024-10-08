@@ -26,6 +26,7 @@ type Engine struct {
 	enemySpawnCnt int
 	font          *ttf.Font
 	Round         int
+	deadEnemies int
 }
 
 var instance *Engine

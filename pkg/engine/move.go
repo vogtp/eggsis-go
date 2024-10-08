@@ -5,16 +5,20 @@ import (
 	"github.com/vogtp/eggsis-go/pkg/vector"
 )
 
-func (e *Engine) cleanupEnemies(){
+func (e *Engine) cleanupEnemies() {
+	if e.deadEnemies < 10 {
+		return
+	}
 	e2 := e.enemies
 	e.enemies = make([]*enemy.Enemy, 0, len(e2))
 	for _, en := range e2 {
-		if ! en.IsDead() || en.LootDrop != nil {
-			e.enemies = append(e.enemies, en)
-		}else{
+		if en.Delete {
 			en.Free()
+		} else {
+			e.enemies = append(e.enemies, en)
 		}
 	}
+	e.deadEnemies = 0
 }
 
 func (e *Engine) Move(s vector.Speed) {
@@ -36,7 +40,7 @@ func (e *Engine) Move(s vector.Speed) {
 		// }
 		if e.player.HasIntersection(en.Rect) {
 			e.Fight(e.player, en)
-			return
+			continue
 		}
 		en.MoveTo(e.player.Rect, e.enemies)
 	}
