@@ -10,7 +10,10 @@ func init() {
 		Name:        "Egg",
 		Image:       "res/egg.png",
 		Description: "Just a plain old egg!",
-		Modifier:    func(e *player.Egg) {},
+		Modifier:    func(p *player.Egg) {
+		p.Gold+=50	
+		},
+	
 	}
 	Players = append(Players, normalEgg)
 	Players = append(Players, Item{
@@ -19,6 +22,7 @@ func init() {
 		Description: "An attackin egg...",
 		Modifier: func(p *player.Egg) {
 			p.DMG+=7
+			p.Speed+=3
 		},
 	})
 	Players = append(Players, Item{
