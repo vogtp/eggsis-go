@@ -27,16 +27,24 @@ func events() {
 			switch e.Keysym.Sym {
 			case sdl.K_LEFT:
 				speed.X = -1 * calcSpeed(e, speed.X)
-				//speed.y = 0
+			case sdl.K_a:
+				speed.X = -1 * calcSpeed(e, speed.X)
+
 			case sdl.K_RIGHT:
 				speed.X = calcSpeed(e, speed.X)
-				//speed.y = 0
+			case sdl.K_d:
+				speed.X = calcSpeed(e, speed.X)
+
 			case sdl.K_UP:
-				//speed.x = 0
 				speed.Y = -1 * calcSpeed(e, speed.Y)
+			case sdl.K_w:
+				speed.Y = -1 * calcSpeed(e, speed.Y)
+
 			case sdl.K_DOWN:
-				//speed.x = 0
 				speed.Y = calcSpeed(e, speed.Y)
+			case sdl.K_s:
+				speed.Y = calcSpeed(e, speed.Y)
+
 			case sdl.K_END:
 				if e.State != sdl.RELEASED {
 					continue
