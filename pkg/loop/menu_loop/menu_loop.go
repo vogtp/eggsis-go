@@ -6,8 +6,6 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/vogtp/eggsis-go/pkg/controlls"
 	"github.com/vogtp/eggsis-go/pkg/controlls/position"
-	"github.com/vogtp/eggsis-go/pkg/engine"
-	"github.com/vogtp/eggsis-go/pkg/fontmanager/choice"
 	"github.com/vogtp/eggsis-go/pkg/player"
 	vertor "github.com/vogtp/eggsis-go/pkg/vector"
 )
@@ -32,9 +30,12 @@ func Run(window *sdl.Window) bool {
 	defer func() { buttons = buttons[:0] }()
 	buttons = append(buttons, controlls.NewButton("Quit", position.BottmLeft(windowSurface.W, windowSurface.H, 100, 30), func() { stop = true }))
 	buttons = append(buttons, controlls.NewButton("Start Fight", position.BottmRight(windowSurface.W, windowSurface.H, 100, 30), func() { running = false }))
+	
+	choose:=modsMenu()
+	defer choose()
 	if player.Instance == nil {
 		slog.Info("Player Menu", "player", player.Instance)
-		choose:= playerMenu()
+		choose := playerMenu()
 		defer choose()
 	}
 	for running && !stop {
@@ -48,33 +49,4 @@ func Run(window *sdl.Window) bool {
 		sdl.Delay(10)
 	}
 	return stop
-}
-
-func playerMenu() func() {
-	engine, err := engine.Create()
-	if err != nil {
-		panic(err)
-	}
-	defer engine.Free()
-	list := controlls.NewChoiceList()
-	cb := make([]*controlls.ChoiceButton, 0)
-	for i, c := range choice.Players {
-		w := int32(200)
-		r := sdl.Rect{
-			X: 10*int32(i) + int32(i)*w,
-			Y: 100,
-			W: w,
-			H: 100,
-		}
-		cb = append(cb, controlls.NewChoiceButton(list, &c, &r, engine))
-	}
-	for _, c := range cb {
-		buttons = append(buttons, c)
-	}
-	choose := func() {
-		list.Apply(func(c *choice.Item) {
-			engine.CreatePlayer(c)
-		})
-	}
-	return choose
 }

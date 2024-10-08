@@ -7,7 +7,7 @@ import (
 	"github.com/veandco/go-sdl2/ttf"
 	"github.com/vogtp/eggsis-go/pkg/enemy"
 	"github.com/vogtp/eggsis-go/pkg/fontmanager"
-	"github.com/vogtp/eggsis-go/pkg/fontmanager/choice"
+	"github.com/vogtp/eggsis-go/pkg/choice"
 	"github.com/vogtp/eggsis-go/pkg/player"
 )
 
