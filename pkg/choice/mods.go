@@ -31,4 +31,12 @@ func init() {
 			p.LP = p.MaxLp
 		},
 	})
+	Mods = append(Mods, Item{
+		Name:        "Wings",
+		// Image:       "res/egg_strauss.png",
+		Description: "Move faster",
+		Modifier: func(p *player.Egg) {
+			p.Speed += 5
+		},
+	})
 }
