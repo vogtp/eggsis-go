@@ -2,6 +2,7 @@ package enemy
 
 import (
 	"fmt"
+	"log/slog"
 	"math/rand/v2"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -21,14 +22,21 @@ func Create(t *thing.Thing, round int) (*Enemy, error) {
 	for t.HasIntersection(&r) {
 		r = randRect()
 	}
+	level := 1
+	if rand.IntN(10) > 8 {
+		level = 2
+	}
+	r.H += r.H/5 * int32(level-1)
+	r.W += r.W/5 * int32(level-1)
+	slog.Info("New Enemy", "level", level, "rect",r)
 	t, err := thing.Create(r, "res/meat.png")
 	if err != nil {
 		return nil, fmt.Errorf("cannot create base enemy thing: %w", err)
 	}
 	e := Enemy{Thing: t}
-	e.DMG = rand.IntN(1) + 4*round
-	e.LP = rand.IntN(50) + 50*round
-	e.Speed = rand.Int32N(e.Speed) + 1*int32(round)
+	e.DMG = level + 4*round
+	e.LP = level*50 + 50*round
+	e.Speed = int32(level+round) + e.Speed - 2
 	if rand.IntN(2) == 1 {
 		e.LootDrop = loot.Gold(rand.IntN(e.DMG*5) + e.DMG)
 	} else {
