@@ -9,4 +9,6 @@ type Item struct {
 	Image       string
 	Description string
 	Modifier    PlayerModifier
+
+	Cost int
 }

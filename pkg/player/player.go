@@ -26,7 +26,9 @@ func Create() (*Egg, error) {
 		Instance.setToStart()
 		return Instance, nil
 	}
-	p := Egg{}
+	p := Egg{
+		Gold: 50,
+	}
 	Instance = &p
 	r := sdl.Rect{
 		X: cfg.WinX / 2,

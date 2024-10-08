@@ -44,6 +44,14 @@ func NewChoiceButton(list *ChoiceList, choice *choice.Item, pos *sdl.Rect, multi
 		choice: choice,
 	}
 	c.Button = NewButton(choice.Name, pos, func() {
+		if !list.choiceSelection[c] {
+			if player.Instance.Gold < c.choice.Cost{
+				return
+			}
+			player.Instance.Gold -= c.choice.Cost
+		}else{
+			player.Instance.Gold += c.choice.Cost
+		}
 		if !multi {
 			for k := range list.choiceSelection {
 				list.choiceSelection[k] = false
