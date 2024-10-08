@@ -36,10 +36,10 @@ func Create(t *thing.Thing, round int) (*Enemy, error) {
 	e.DMG = level + round + 4
 	e.LP = level*50 + 10*round
 	e.Speed = int32(level+round) + e.Speed - 5
-	if rand.IntN(2) == 1 {
-		e.LootDrop = loot.Gold(rand.IntN(e.DMG*5) + e.DMG)
-	} else {
+	if rand.IntN(3) == 1 {
 		e.LootDrop = loot.Heal(rand.IntN(e.DMG*5) + e.DMG)
+	} else {
+		e.LootDrop = loot.Gold(rand.IntN(e.DMG*5) + e.DMG)
 	}
 
 	slog.Info("New Enemy", "level", level, "enemy",e)
