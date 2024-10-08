@@ -28,8 +28,8 @@ func Run(window *sdl.Window) bool {
 	}
 	go events()
 	defer func() { buttons = buttons[:0] }()
-	buttons = append(buttons, controlls.NewButton("Quit", position.BottmLeft(windowSurface.W, windowSurface.H, 100, 30), func() { stop = true }))
-	buttons = append(buttons, controlls.NewButton("Start Fight", position.BottmRight(windowSurface.W, windowSurface.H, 100, 30), func() { running = false }))
+	buttons = append(buttons, controlls.NewButton("Quit", position.BottmLeft(windowSurface.W, windowSurface.H, 250, 100), func() { stop = true }))
+	buttons = append(buttons, controlls.NewButton("Start Fight", position.BottmRight(windowSurface.W, windowSurface.H, 250, 100), func() { running = false }))
 	
 	choose:=modsMenu()
 	defer choose()

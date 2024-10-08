@@ -11,15 +11,17 @@ import (
 func events() {
 	slog.Warn("Starting event loop")
 	defer slog.Warn("Stopping event loop")
-	for running {
+	for processEvents {
 		event := sdl.PollEvent()
 		if event == nil {
 			continue
 		}
 		switch e := event.(type) {
 		case *sdl.QuitEvent:
-			//fmt.Printf("Got quit event %v\n", e)
+			slog.Info("Got quit event", "event", e)
 			stop = true
+			running = false
+			showVictory = false
 			break
 		case *sdl.KeyboardEvent:
 			switch e.Keysym.Sym {

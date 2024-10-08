@@ -14,11 +14,12 @@ import (
 )
 
 var (
-	speed   vertor.Speed
-	running = true
-	stop    = false
-	noSpeed = vertor.Speed{X: 0, Y: 0}
-	showVictory = true
+	speed         vertor.Speed
+	running       = true
+	stop          = false
+	noSpeed       = vertor.Speed{X: 0, Y: 0}
+	showVictory   = true
+	processEvents = true
 )
 
 func Run(window *sdl.Window) bool {
@@ -36,11 +37,16 @@ func Run(window *sdl.Window) bool {
 	if err != nil {
 		panic(err)
 	}
+	processEvents = true
+	defer func() { processEvents = false }()
 	go events()
 	color := uint32(0xff32a838)
 	nofight := true
 	var start time.Time
 	fightDur := viper.GetDuration(cfg.FightDuration)
+	if err := engine.StartFight(); err != nil {
+		panic(err)
+	}
 	for running && !stop {
 		windowSurface.FillRect(nil, color)
 		if err := engine.Paint(windowSurface, start); err != nil {
@@ -85,13 +91,13 @@ func Run(window *sdl.Window) bool {
 
 func displayVictory(window *sdl.Window, windowSurface *sdl.Surface) {
 	textDisp := "Victory!"
-	if player.Instance.LP <= 0 {
+	defeat := player.Instance.LP <= 0
+	if defeat {
 		textDisp = "You died.... :()"
 	}
-	running = true
-	showVictory = true
-	//	speed = noSpeed
+	showVictory = !stop
 	for !stop && showVictory {
+		// slog.Warn("vicotry", "stop", stop, "showVictory", showVictory)
 		font := fontmanager.GetFont(96)
 		text, err := font.RenderUTF8Blended(textDisp, sdl.Color{R: 0, G: 0, B: 0, A: 255})
 		if err != nil {
@@ -105,5 +111,8 @@ func displayVictory(window *sdl.Window, windowSurface *sdl.Surface) {
 		window.UpdateSurface()
 		sdl.Delay(10)
 	}
-
+	if defeat {
+		stop = true
+		// os.Exit(0)
+	}
 }
