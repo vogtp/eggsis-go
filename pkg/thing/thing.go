@@ -22,14 +22,19 @@ type Thing struct {
 	Speed    int32
 	MaxSpeed int32
 
+	LastAttack time.Time
+	AttackFreq time.Duration
+
 	DeathTime time.Time
 }
 
 func Create(rect sdl.Rect, imgName string) (*Thing, error) {
 	t := Thing{
-		Rect:     &rect,
-		Speed:    cfg.BaseSpeed,
-		MaxSpeed: cfg.MaxSpeed,
+		Rect:       &rect,
+		Speed:      cfg.BaseSpeed,
+		MaxSpeed:   cfg.MaxSpeed,
+		LastAttack: time.Now().Add(200 * time.Millisecond),
+		AttackFreq: 100 * time.Millisecond,
 	}
 	if err := t.LoadImage(imgName); err != nil {
 		return nil, err
@@ -47,7 +52,7 @@ func (t *Thing) LoadImage(imgName string) error {
 }
 
 func (t Thing) String() string {
-	return fmt.Sprintf("LP:%v DMG:%v Armor: %v Speed: %v", t.LP, t.DMG,t.Armor, t.Speed)
+	return fmt.Sprintf("LP:%v DMG:%v Armor: %v Speed: %v", t.LP, t.DMG, t.Armor, t.Speed)
 }
 
 func (t *Thing) Move(speed vector.Speed) {

@@ -6,10 +6,15 @@ import (
 
 	"github.com/veandco/go-sdl2/img"
 	"github.com/vogtp/eggsis-go/pkg/player"
+	"github.com/vogtp/eggsis-go/pkg/thing"
 )
 
-func calcDmg(dmg int, armor int) int {
-	d := dmg - armor
+func calcDmg(attacker *thing.Thing, target *thing.Thing) int {
+	if time.Since(attacker.LastAttack) < attacker.AttackFreq {
+		return 0
+	}
+	attacker.LastAttack = time.Now()
+	d := attacker.DMG - target.Armor
 	if d < 0 {
 		d = 0
 	}
@@ -22,8 +27,8 @@ func (e *Enemy) Fight(p *player.Egg) {
 		e.GetLooted(p)
 		return
 	}
-	p.LP -= calcDmg(e.DMG, p.Armor)
-	e.LP -= calcDmg(p.DMG, e.Armor)
+	p.LP -= calcDmg(e.Thing, p.Thing)
+	e.LP -= calcDmg(p.Thing, e.Thing)
 	if e.IsDead() {
 		e.DeathTime = time.Now()
 	}
