@@ -10,39 +10,58 @@ import (
 
 type ChoiceButton struct {
 	*Button
-	image *sdl.Surface
+	image  *sdl.Surface
+	choice *choice.Item
 }
 
 type ChoiceList struct {
-	choices []*ChoiceButton
-	choice  *choice.Item
+	choices         []*ChoiceButton
+	choiceSelection map[*ChoiceButton]bool
 }
 
 func (l ChoiceList) Apply(apply func(c *choice.Item)) {
-	if l.choice == nil {
+	if l.choiceSelection == nil {
 		slog.Error("no choice to aplly")
 		return
 	}
-	apply(l.choice)
+	for c, ok := range l.choiceSelection {
+		if ok {
+			slog.Debug("Appling choice", "choice", c.choice)
+			apply(c.choice)
+		}
+	}
 }
 
 func NewChoiceList() *ChoiceList {
 	return &ChoiceList{
-		choices: make([]*ChoiceButton, 0),
+		choices:         make([]*ChoiceButton, 0),
+		choiceSelection: make(map[*ChoiceButton]bool),
 	}
 }
 
-func NewChoiceButton(list *ChoiceList, choice *choice.Item, pos *sdl.Rect) *ChoiceButton {
-	c := &ChoiceButton{}
+func NewChoiceButton(list *ChoiceList, choice *choice.Item, pos *sdl.Rect, multi bool) *ChoiceButton {
+	c := &ChoiceButton{
+		choice: choice,
+	}
 	c.Button = NewButton(choice.Name, pos, func() {
-		for _, c := range list.choices {
-			c.bgColor = 233
+		if !multi {
+			for k := range list.choiceSelection {
+				list.choiceSelection[k] = false
+			}
+		}
+		list.choiceSelection[c] = !list.choiceSelection[c]
+		for _, pos := range list.choices {
+			pos.bgColor = 233
+			if list.choiceSelection[pos] {
+				pos.bgColor = 133
+			}
 		}
 
-		slog.Info("chosen player", "player", player.Instance, "choice", choice.Name)
-		c.bgColor = 133
-		list.choice = choice
+		slog.Info("chosen mod", "player", player.Instance, "choice", choice.Name)
+		
 	})
 	list.choices = append(list.choices, c)
+	list.choiceSelection[c] = false
+
 	return c
 }

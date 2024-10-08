@@ -46,6 +46,9 @@ func events() {
 				//fmt.Printf("%#v\n", e)
 			}
 		case *sdl.MouseButtonEvent:
+			if e.State == sdl.RELEASED {
+				continue
+			}
 			r := sdl.Rect{X: e.X, Y: e.Y, H: 1, W: 1}
 			for _, b := range buttons {
 				if b.IsClicked(&r) {

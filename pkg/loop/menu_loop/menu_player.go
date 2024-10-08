@@ -24,7 +24,7 @@ func playerMenu() func() {
 			W: w,
 			H: 100,
 		}
-		cb = append(cb, controlls.NewChoiceButton(list, &c, &r))
+		cb = append(cb, controlls.NewChoiceButton(list, &c, &r, false))
 	}
 	for _, c := range cb {
 		buttons = append(buttons, c)
