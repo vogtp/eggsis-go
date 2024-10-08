@@ -53,6 +53,7 @@ func Create() (*Engine, error) {
 func (e *Engine) StartFight() error {
 	e.Round++
 	slog.Warn("Starting fight", "round", e.Round)
+	e.player.SetToStart()
 	e.enemies = make([]*enemy.Enemy, EnemyCnt)
 	for i := 0; i < EnemyCnt; i++ {
 		en, err := enemy.Create(e.player.Thing, e.Round)

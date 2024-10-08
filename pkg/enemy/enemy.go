@@ -26,8 +26,8 @@ func Create(t *thing.Thing, round int) (*Enemy, error) {
 	if rand.IntN(10) > 8 {
 		level = 2
 	}
-	r.H += r.H/5 * int32(level-1)
-	r.W += r.W/5 * int32(level-1)
+	r.H += r.H/4 * int32(level-1)
+	r.W += r.W/4 * int32(level-1)
 	t, err := thing.Create(r, "res/meat.png")
 	if err != nil {
 		return nil, fmt.Errorf("cannot create base enemy thing: %w", err)

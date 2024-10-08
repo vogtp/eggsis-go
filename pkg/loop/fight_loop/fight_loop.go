@@ -1,6 +1,7 @@
 package fight_loop
 
 import (
+	"fmt"
 	"log/slog"
 	"time"
 
@@ -54,7 +55,7 @@ func Run(window *sdl.Window) bool {
 		}
 		if nofight && speed == noSpeed {
 			font := fontmanager.GetFont(96)
-			text, err := font.RenderUTF8Blended("Move to start", sdl.Color{R: 0, G: 0, B: 0, A: 255})
+			text, err := font.RenderUTF8Blended(fmt.Sprintf("Round %v - Move to start", engine.Round), sdl.Color{R: 0, G: 0, B: 0, A: 255})
 			if err != nil {
 				panic(err)
 			}

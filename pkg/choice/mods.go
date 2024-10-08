@@ -19,7 +19,7 @@ func init() {
 		Name:        "Shield",
 		// Image:       "res/egg_eagle.png",
 		Description: "Protect your egg",
-		Cost: 50,
+		Cost: 100,
 		Modifier: func(p *player.Egg) {
 			p.Armor += 3
 		},
@@ -30,7 +30,7 @@ func init() {
 		Description: "More health",
 		Cost: 50,
 		Modifier: func(p *player.Egg) {
-			p.MaxLp += 30
+			p.MaxLp += 40
 			p.LP = p.MaxLp
 		},
 	})

@@ -23,7 +23,7 @@ var Instance *Egg
 func Create() (*Egg, error) {
 	slog.Info("player create","instance", Instance)
 	if Instance != nil {
-		Instance.setToStart()
+		Instance.SetToStart()
 		return Instance, nil
 	}
 	p := Egg{
@@ -52,7 +52,7 @@ func (p Egg) String() string{
 	return fmt.Sprintf("%s: %s", p.Name, p.Thing.String())
 }
 
-func (p *Egg) setToStart() {
+func (p *Egg) SetToStart() {
 	p.LP = Instance.MaxLp
 	p.X = cfg.WinX / 2
 	p.Y = cfg.WinY / 2

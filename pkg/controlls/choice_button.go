@@ -1,6 +1,7 @@
 package controlls
 
 import (
+	"fmt"
 	"log/slog"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -43,7 +44,11 @@ func NewChoiceButton(list *ChoiceList, choice *choice.Item, pos *sdl.Rect, multi
 	c := &ChoiceButton{
 		choice: choice,
 	}
-	c.Button = NewButton(choice.Name, pos, func() {
+	label := choice.Name
+	if choice.Cost > 0{
+		label = fmt.Sprintf("%s (%v G)", label, choice.Cost)
+	}
+	c.Button = NewButton(label, pos, func() {
 		if !list.choiceSelection[c] {
 			if player.Instance.Gold < c.choice.Cost{
 				return
