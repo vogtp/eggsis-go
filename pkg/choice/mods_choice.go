@@ -4,8 +4,6 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/veandco/go-sdl2/sdl"
-	"github.com/vogtp/eggsis-go/pkg/enemy"
 	"github.com/vogtp/eggsis-go/pkg/player"
 )
 
@@ -60,30 +58,7 @@ func init() {
 			slog.Info("Karate", "attack freq", p.AttackFreq)
 		},
 	})
-	Mods = append(Mods, Item{
-		Name: "Gun",
-		// Image:       "res/egg_strauss.png",
-		Description: "Fight faster",
-		Cost:        30,
-		Modifier: func(p *player.Egg) {
-
-		},
-		Action: func(p *player.Egg, enemies []*enemy.Enemy) {
-			dmg := 150
-			dist := int32(10)
-			r := sdl.Rect{
-				X: p.X - dist,
-				Y: p.Y - dist,
-				H: p.H + dist,
-				W: p.W + dist,
-			}
-			for _, e := range enemies {
-				if!e.IsDead() && e.HasIntersection(&r) {
-					e.LP -= dmg - e.Armor
-					e.DeathTime = time.Now()
-					return
-				}
-			}
-		},
-	})
+	Mods = append(Mods, *newGun("Old gun", 20, 3, 20, 500*time.Millisecond, "Old slow gun").Item)
+	Mods = append(Mods, *newGun("Good gun", 80, 10, 100, 100*time.Millisecond, "Strong fast gun gun").Item)
+	Mods = append(Mods, *newGun("Machine gun", 200, 30, 120, 50*time.Millisecond, "Machine gun").Item)
 }

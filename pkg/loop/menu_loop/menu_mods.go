@@ -2,6 +2,7 @@ package menuloop
 
 import (
 	"log/slog"
+	"math/rand/v2"
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/vogtp/eggsis-go/pkg/choice"
@@ -9,10 +10,21 @@ import (
 	"github.com/vogtp/eggsis-go/pkg/player"
 )
 
+const maxNumberOfMods = 5
+
+func getMods() []choice.Item {
+	mods := make([]choice.Item, maxNumberOfMods)
+	for i := 0; i < maxNumberOfMods; i++ {
+		mods[i] = choice.Mods[rand.IntN(len(choice.Mods))]
+	}
+	return mods
+}
+
 func modsMenu() func() {
 	list := controlls.NewChoiceList()
 	cb := make([]*controlls.ChoiceButton, 0)
-	for i, c := range choice.Mods {
+	mods := getMods()
+	for i, c := range mods {
 		w := int32(200)
 		r := sdl.Rect{
 			X: 10*int32(i) + int32(i)*w,
