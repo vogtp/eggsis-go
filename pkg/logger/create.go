@@ -7,9 +7,8 @@ import (
 
 	"log/slog"
 
-
-	"github.com/vogtp/eggsis-go/pkg/cfg"
 	"github.com/spf13/viper"
+	"github.com/vogtp/eggsis-go/pkg/cfg"
 )
 
 func New() *slog.Logger {
@@ -30,6 +29,9 @@ func Create(lvl slog.Level) *slog.Logger {
 			}
 			return a
 		}
+	} else {
+		slog.SetLogLoggerLevel(lvl)
+		return slog.Default()
 	}
 	var logWriter io.Writer
 	logWriter = os.Stdout
