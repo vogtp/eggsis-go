@@ -7,6 +7,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/vogtp/eggsis-go/pkg/controlls"
 	"github.com/vogtp/eggsis-go/pkg/controlls/position"
+	"github.com/vogtp/eggsis-go/pkg/engine"
 	"github.com/vogtp/eggsis-go/pkg/fontmanager"
 	"github.com/vogtp/eggsis-go/pkg/player"
 	vertor "github.com/vogtp/eggsis-go/pkg/vector"
@@ -37,6 +38,12 @@ func Run(window *sdl.Window) bool {
 	defer choose()
 	if player.Instance == nil {
 		slog.Info("Player Menu", "player", player.Instance)
+		engine, err := engine.Create()
+		if err != nil {
+			panic(err)
+		}
+		defer engine.Free()
+
 		choose := playerMenu()
 		defer choose()
 	}
