@@ -52,6 +52,7 @@ func Run(window *sdl.Window) bool {
 	totDur := int64(0)
 	longDur:=0
 	for running && !stop {
+		cnt++
 		loopBegin := time.Now()
 		windowSurface.FillRect(nil, color)
 		if err := engine.Paint(windowSurface, start); err != nil {
@@ -90,7 +91,6 @@ func Run(window *sdl.Window) bool {
 		window.UpdateSurface()
 		d := time.Since(loopBegin).Milliseconds()
 		totDur += d
-		cnt++
 		delay := 10
 		if d < int64(delay) {
 			sdl.Delay(uint32(delay) - uint32(d))
